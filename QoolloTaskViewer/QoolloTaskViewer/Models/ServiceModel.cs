@@ -18,5 +18,7 @@ namespace QoolloTaskViewer.Models
         public string Name { get; set; }
         public string Domain { get; set; }
         public ServiceModelType Type { get; set; }
+
+        public List<TokenModel> Tokens { get; set; }
     }
 }
