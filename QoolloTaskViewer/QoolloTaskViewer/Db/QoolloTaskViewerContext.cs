@@ -21,20 +21,15 @@ namespace QoolloTaskViewer.Db
         public QoolloTaskViewerContext(DbContextOptions<QoolloTaskViewerContext> options)
             : base(options)
         {
-            Database.EnsureCreated();
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<TokenModel>()
-                .HasOne(p => p.User)
-                .WithMany(t => t.Tokens)
-                .HasForeignKey(p => p.UserId);
-
-            modelBuilder.Entity<TokenModel>()
-                .HasOne(p => p.Service)
-                .WithMany(t => t.Tokens)
-                .HasForeignKey(p => p.ServiceId);
+            modelBuilder.ApplyConfiguration(new UserConfiguration());
+            modelBuilder.ApplyConfiguration(new DomainConfiguration());
+            modelBuilder.ApplyConfiguration(new ServiceTypeConfiguration());
+            modelBuilder.ApplyConfiguration(new ServiceConfiguration());
+            modelBuilder.ApplyConfiguration(new TokenConfiguration());
         }
     }
 }
