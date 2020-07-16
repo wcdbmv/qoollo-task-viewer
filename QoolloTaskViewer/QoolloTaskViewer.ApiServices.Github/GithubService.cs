@@ -5,19 +5,21 @@ using System.Net.Http.Headers;
 using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
+using QoolloTaskViewer.ApiServices.Dtos;
 
 namespace QoolloTaskViewer.ApiServices.Github
 {
-    class GithubService : IApiService
+    public class GithubService : IApiService
     {
         private readonly string baseAddress = "https://api.github.com";
 
-        private string Token { get; set; }
+        private readonly string _token;
+
         private HttpClient Client { get; set; }
 
         public GithubService(string token)
         {
-            Token = token;
+            _token = token;
             CreateClient();
             AuthorizeClient();
         }
@@ -26,19 +28,73 @@ namespace QoolloTaskViewer.ApiServices.Github
         {
             Client = new HttpClient();
             Client.DefaultRequestHeaders.Accept.Clear();
-            Client.DefaultRequestHeaders.Add("User-Agent", "QoolloTaskViewer");
+            Client.DefaultRequestHeaders.Add("User-Agent", CommonData.AppName);
         }
 
         void AuthorizeClient()
         {
-            Client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", Token);
+            Client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _token);
         }
 
-        async Task<List<IssueDto>> IApiService.GeatAllMyIssues()
+        public async Task<List<IssueDto>> GeatAllMyIssuesAsync()
         {
             var query = "/issues?scope=assigned_to_me";
-            var stringTask = Client.GetStreamAsync(baseAddress + query);
-            var issues = await JsonSerializer.DeserializeAsync<List<IssueDto>>(await stringTask);
+            var stringTask = await Client.GetStreamAsync(baseAddress + query);
+            List<GithubIssueDto> rawIssues;
+            try
+            {
+                rawIssues = await JsonSerializer.DeserializeAsync<List<GithubIssueDto>>(stringTask);
+            }
+            catch (JsonException e)
+            {
+                throw e;
+            }
+
+            return mapIssues(rawIssues);
+        }
+
+        List<IssueDto> mapIssues(List<GithubIssueDto> rawIssues)
+        {
+            List<IssueDto> issues = new List<IssueDto>();
+
+            foreach (var rawIssue in rawIssues)
+            {
+                LabelFinder labelFinder = new LabelFinder(rawIssue.labels);
+                string dueDate = null;
+
+                if (rawIssue.milestone != null)
+                {
+                    dueDate = rawIssue.milestone.due_on;
+                }
+
+                State issueState;
+                if (rawIssue.state == "open")
+                {
+                    issueState = State.Open;
+                }
+                else
+                {
+                    issueState = State.Closed;
+                }
+
+                IssueDto issue = new IssueDto
+                {
+                    Name = rawIssue.title,
+                    State = issueState,
+                    Description = rawIssue.body,
+                    Labels = rawIssue.labels,
+                    Difficulty = labelFinder.GetDifficulty(),
+                    Priority = labelFinder.GetPriority(),
+                    DueDate = dueDate,
+                    ServiceInfo = new ServiceInfoDto
+                    {
+                        Name = Service.Github,
+                        Url = rawIssue.html_url
+                    }
+                };
+
+                issues.Add(issue);
+            }
 
             return issues;
         }
