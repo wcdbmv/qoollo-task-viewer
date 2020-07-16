@@ -12,6 +12,7 @@ namespace QoolloTaskViewer.Models
         public Guid ServiceId { get; set; }
         public string InServiceUsername { get; set; }
         public string Token { get; set; }
+        public bool Enabled { get; set; }
 
         public UserModel User { get; set; }
         public ServiceModel Service { get; set; }

@@ -19,6 +19,8 @@ namespace QoolloTaskViewer.Db.Configuration
             builder.Property(t => t.InServiceUsername).HasMaxLength(255);
 
             builder.Property(t => t.Token).IsRequired();
+
+            builder.Property(t => t.Enabled).HasDefaultValue(true);
         }
     }
 }
