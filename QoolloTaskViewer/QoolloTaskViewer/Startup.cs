@@ -27,7 +27,7 @@ namespace QoolloTaskViewer
         {
             services.AddControllersWithViews();
 
-            services.AddDbContext<QoolloTaskViewerContext>(options =>
+            services.AddDbContextPool<QoolloTaskViewerContext>(options =>
                 options.UseNpgsql(Configuration.GetConnectionString("DefaultConnection")));
         }
 

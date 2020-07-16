@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using QoolloTaskViewer.Models;
 
-namespace QoolloTaskViewer.Db
+namespace QoolloTaskViewer.Db.Configuration
 {
     public class UserConfiguration : IEntityTypeConfiguration<UserModel>
     {

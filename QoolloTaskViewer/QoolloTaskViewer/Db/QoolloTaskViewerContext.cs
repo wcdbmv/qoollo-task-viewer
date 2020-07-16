@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using QoolloTaskViewer.Db.Configuration;
 using QoolloTaskViewer.Models;
 
 namespace QoolloTaskViewer.Db
@@ -10,13 +11,9 @@ namespace QoolloTaskViewer.Db
     public class QoolloTaskViewerContext : DbContext
     {
         public DbSet<UserModel> Users { get; set; }
+        public DbSet<DomainModel> Domains { get; set; }
         public DbSet<ServiceModel> Services { get; set; }
         public DbSet<TokenModel> Tokens { get; set; }
-
-        public QoolloTaskViewerContext()
-        {
-            Database.EnsureCreated();
-        }
 
         public QoolloTaskViewerContext(DbContextOptions<QoolloTaskViewerContext> options)
             : base(options)
@@ -27,7 +24,6 @@ namespace QoolloTaskViewer.Db
         {
             modelBuilder.ApplyConfiguration(new UserConfiguration());
             modelBuilder.ApplyConfiguration(new DomainConfiguration());
-            modelBuilder.ApplyConfiguration(new ServiceTypeConfiguration());
             modelBuilder.ApplyConfiguration(new ServiceConfiguration());
             modelBuilder.ApplyConfiguration(new TokenConfiguration());
         }

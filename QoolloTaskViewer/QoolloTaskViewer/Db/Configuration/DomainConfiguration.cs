@@ -6,14 +6,12 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using QoolloTaskViewer.Models;
 
-namespace QoolloTaskViewer.Db
+namespace QoolloTaskViewer.Db.Configuration
 {
     public class DomainConfiguration : IEntityTypeConfiguration<DomainModel>
     {
         public void Configure(EntityTypeBuilder<DomainModel> builder)
         {
-            builder.ToTable("Domains");
-
             builder.Property(d => d.Domain).IsRequired();
             builder.Property(d => d.Domain).HasMaxLength(255);
             builder.HasAlternateKey(d => d.Domain);
