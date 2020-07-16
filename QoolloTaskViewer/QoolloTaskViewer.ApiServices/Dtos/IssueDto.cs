@@ -2,29 +2,39 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace QoolloTaskViewer.ApiServices
+namespace QoolloTaskViewer.ApiServices.Dtos
 {
-    public class Label
+    public enum Difficulty
     {
-        public string name { get; set; }
-        public string description { get; set; }
+        Unrecognized,
+        Easy,
+        Medium,
+        Hard
     }
 
-    public class Milestone
+    public enum Priority
     {
-        public string due_on { get; set; }
+        Unrecognized,
+        Low,
+        Medium,
+        High
+    }
+
+    public enum State
+    {
+        Open,
+        Closed
     }
 
     public class IssueDto
     {
-        public string title { get; set; }
-        public string state { get; set; }
-
-        public string body { get; set; }
-
-        public List<Label> labels { get; set; }
-        public Milestone milestone { get; set; }
-
-        public string html_url { get; set; }
+        public string Name { get; set; }
+        public State State { get; set; }
+        public string Description { get; set; }
+        public string DueDate { get; set; }
+        public Difficulty Difficulty { get; set; }
+        public Priority Priority { get; set; }
+        public List<LabelDto> Labels { get; set; }
+        public ServiceInfoDto ServiceInfo { get; set; }
     }
 }
