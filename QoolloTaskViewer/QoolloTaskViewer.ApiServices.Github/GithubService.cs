@@ -5,7 +5,9 @@ using System.Net.Http.Headers;
 using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
+using QoolloTaskViewer.ApiServices.Github.Dtos;
 using QoolloTaskViewer.ApiServices.Dtos;
+using QoolloTaskViewer.ApiServices.Enums;
 
 namespace QoolloTaskViewer.ApiServices.Github
 {
@@ -36,7 +38,7 @@ namespace QoolloTaskViewer.ApiServices.Github
             Client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _token);
         }
 
-        public async Task<List<IssueDto>> GeatAllMyIssuesAsync()
+        public async Task<List<IssueDto>> GeatAllIssuesAsync()
         {
             var query = "/issues?scope=assigned_to_me";
             var stringTask = await Client.GetStreamAsync(baseAddress + query);
@@ -45,37 +47,29 @@ namespace QoolloTaskViewer.ApiServices.Github
             {
                 rawIssues = await JsonSerializer.DeserializeAsync<List<GithubIssueDto>>(stringTask);
             }
-            catch (JsonException e)
+            catch (JsonException)
             {
-                throw e;
+                return null;
             }
 
-            return mapIssues(rawIssues);
+            return MapIssues(rawIssues);
         }
 
-        List<IssueDto> mapIssues(List<GithubIssueDto> rawIssues)
+        List<IssueDto> MapIssues(List<GithubIssueDto> rawIssues)
         {
             List<IssueDto> issues = new List<IssueDto>();
 
             foreach (var rawIssue in rawIssues)
             {
                 LabelFinder labelFinder = new LabelFinder(rawIssue.labels);
-                string dueDate = null;
+                DateTime dueDate = default;
 
                 if (rawIssue.milestone != null)
                 {
-                    dueDate = rawIssue.milestone.due_on;
+                    dueDate = DateTime.Parse(rawIssue.milestone.due_on);
                 }
 
-                State issueState;
-                if (rawIssue.state == "open")
-                {
-                    issueState = State.Open;
-                }
-                else
-                {
-                    issueState = State.Closed;
-                }
+                State issueState = rawIssue.state == "open" ? State.Open : State.Closed;
 
                 IssueDto issue = new IssueDto
                 {
@@ -88,10 +82,10 @@ namespace QoolloTaskViewer.ApiServices.Github
                     DueDate = dueDate,
                     ServiceInfo = new ServiceInfoDto
                     {
-                        Name = Service.Github,
-                        Url = rawIssue.html_url
-                    }
-                };
+                        ServiceType = ServiceType.Github
+                    },
+                    Url = rawIssue.html_url
+            };
 
                 issues.Add(issue);
             }
