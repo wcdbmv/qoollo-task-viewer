@@ -61,7 +61,7 @@ namespace QoolloTaskViewer.ApiServices.Github
 
             foreach (var rawIssue in rawIssues)
             {
-                LabelFinder labelFinder = new LabelFinder(rawIssue.labels);
+                GitLabelFinder labelFinder = new GitLabelFinder(rawIssue.labels);
                 DateTime dueDate = default;
 
                 if (rawIssue.milestone != null)
