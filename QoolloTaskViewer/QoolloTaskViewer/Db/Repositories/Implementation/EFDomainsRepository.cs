@@ -5,38 +5,36 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using QoolloTaskViewer.Models;
 
-namespace QoolloTaskViewer.Db.Repositories
+namespace QoolloTaskViewer.Db.Repositories.Implementation
 {
-    public class EFDomainsRepository : IDomainsRepository
+    public class EFDomainsRepository : EFBaseRepository, IDomainsRepository
     {
-        protected QoolloTaskViewerContext Context;
-
         public EFDomainsRepository(QoolloTaskViewerContext context)
+            : base(context)
         {
-            Context = context;
         }
 
         public async Task<DomainModel> FindDomainAsync(Guid id)
         {
-            return await Context.Domains.FindAsync(id);
+            return await _context.Domains.FindAsync(id);
         }
 
         public async Task AddDomainAsync(DomainModel domain)
         {
-            await Context.Domains.AddAsync(domain);
-            await Context.SaveChangesAsync();
+            await _context.Domains.AddAsync(domain);
+            await _context.SaveChangesAsync();
         }
 
         public Task UpdateDomainAsync(DomainModel domain)
         {
-            Context.Entry(domain).State = EntityState.Modified;
-            return Context.SaveChangesAsync();
+            _context.Entry(domain).State = EntityState.Modified;
+            return _context.SaveChangesAsync();
         }
 
         public Task RemoveDomainAsync(DomainModel domain)
         {
-            Context.Domains.Remove(domain);
-            return Context.SaveChangesAsync();
+            _context.Domains.Remove(domain);
+            return _context.SaveChangesAsync();
         }
     }
 }

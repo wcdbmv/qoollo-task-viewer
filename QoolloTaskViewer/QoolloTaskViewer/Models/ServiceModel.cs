@@ -5,13 +5,6 @@ using System.Threading.Tasks;
 
 namespace QoolloTaskViewer.Models
 {
-    public enum ServiceType
-    {
-        GitHub,
-        GitLab,
-        Jira,
-    }
-
     public class ServiceModel
     {
         public Guid Id { get; set; }

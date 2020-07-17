@@ -5,38 +5,36 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using QoolloTaskViewer.Models;
 
-namespace QoolloTaskViewer.Db.Repositories
+namespace QoolloTaskViewer.Db.Repositories.Implementation
 {
-    public class EFUsersRepository : IUsersRepository
+    public class EFUsersRepository : EFBaseRepository, IUsersRepository
     {
-        protected QoolloTaskViewerContext Context;
-
         public EFUsersRepository(QoolloTaskViewerContext context)
+            : base(context)
         {
-            Context = context;
         }
 
         public async Task<UserModel> FindUserAsync(Guid id)
         {
-            return await Context.Users.FindAsync(id);
+            return await _context.Users.FindAsync(id);
         }
 
         public async Task AddUserAsync(UserModel user)
         {
-            await Context.Users.AddAsync(user);
-            await Context.SaveChangesAsync();
+            await _context.Users.AddAsync(user);
+            await _context.SaveChangesAsync();
         }
 
         public Task UpdateUserAsync(UserModel user)
         {
-            Context.Entry(user).State = EntityState.Modified;
-            return Context.SaveChangesAsync();
+            _context.Entry(user).State = EntityState.Modified;
+            return _context.SaveChangesAsync();
         }
 
         public Task RemoveUserAsync(UserModel user)
         {
-            Context.Users.Remove(user);
-            return Context.SaveChangesAsync();
+            _context.Users.Remove(user);
+            return _context.SaveChangesAsync();
         }
     }
 }

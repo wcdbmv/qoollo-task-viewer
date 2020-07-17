@@ -5,48 +5,46 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using QoolloTaskViewer.Models;
 
-namespace QoolloTaskViewer.Db.Repositories
+namespace QoolloTaskViewer.Db.Repositories.Implementation
 {
-    public class EFTokensRepository : ITokensRepository
+    public class EFTokensRepository : EFBaseRepository, ITokensRepository
     {
-        protected QoolloTaskViewerContext Context;
-
         public EFTokensRepository(QoolloTaskViewerContext context)
+            : base(context)
         {
-            Context = context;
         }
 
         public Task<List<TokenModel>> GetTokensAsync(Guid userId, bool enabledOnly = true)
         {
             Task<List<TokenModel>> res;
             if (enabledOnly)
-                res = Context.Tokens.Where(t => t.UserId == userId && t.Enabled).ToListAsync();
+                res = _context.Tokens.Where(t => t.UserId == userId && t.Enabled).ToListAsync();
             else
-                res = Context.Tokens.Where(t => t.UserId == userId).ToListAsync();
+                res = _context.Tokens.Where(t => t.UserId == userId).ToListAsync();
             return res;
         }
 
         public async Task<TokenModel> FindTokenAsync(Guid id)
         {
-            return await Context.Tokens.FindAsync(id);
+            return await _context.Tokens.FindAsync(id);
         }
 
         public async Task AddTokenAsync(TokenModel token)
         {
-            await Context.Tokens.AddAsync(token);
-            await Context.SaveChangesAsync();
+            await _context.Tokens.AddAsync(token);
+            await _context.SaveChangesAsync();
         }
 
         public Task UpdateTokenAsync(TokenModel token)
         {
-            Context.Entry(token).State = EntityState.Modified;
-            return Context.SaveChangesAsync();
+            _context.Entry(token).State = EntityState.Modified;
+            return _context.SaveChangesAsync();
         }
 
         public Task RemoveTokenAsync(TokenModel token)
         {
-            Context.Tokens.Remove(token);
-            return Context.SaveChangesAsync();
+            _context.Tokens.Remove(token);
+            return _context.SaveChangesAsync();
         }
     }
 }

@@ -5,38 +5,36 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using QoolloTaskViewer.Models;
 
-namespace QoolloTaskViewer.Db.Repositories
+namespace QoolloTaskViewer.Db.Repositories.Implementation
 {
-    public class EFServicesRepository : IServicesRepository
+    public class EFServicesRepository : EFBaseRepository, IServicesRepository
     {
-        protected QoolloTaskViewerContext Context;
-
         public EFServicesRepository(QoolloTaskViewerContext context)
+            : base(context)
         {
-            Context = context;
         }
 
         public async Task<ServiceModel> FindServiceAsync(Guid id)
         {
-            return await Context.Services.FindAsync(id);
+            return await _context.Services.FindAsync(id);
         }
 
         public async Task AddServiceAsync(ServiceModel service)
         {
-            await Context.Services.AddAsync(service);
-            await Context.SaveChangesAsync();
+            await _context.Services.AddAsync(service);
+            await _context.SaveChangesAsync();
         }
 
         public Task UpdateServiceAsync(ServiceModel service)
         {
-            Context.Entry(service).State = EntityState.Modified;
-            return Context.SaveChangesAsync();
+            _context.Entry(service).State = EntityState.Modified;
+            return _context.SaveChangesAsync();
         }
 
         public Task RemoveServiceAsync(ServiceModel service)
         {
-            Context.Services.Remove(service);
-            return Context.SaveChangesAsync();
+            _context.Services.Remove(service);
+            return _context.SaveChangesAsync();
         }
     }
 }
