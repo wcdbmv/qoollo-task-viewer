@@ -29,11 +29,11 @@
 
         <div class="row main flex-fill">
             <nav class="nav flex-column col-3">
-                <a class="nav-link active" href="#">
+                <a asp-action="index" asp-controller="Board" class="nav-link @(ViewBag.Current == "Board" ? "active" : "")">
                     <img src="~/img/board_icon.svg" class="navicon" />
                     BOARD
                 </a>
-                <a class="nav-link" href="#">
+                <a asp-action="index" asp-controller="Settings" class="nav-link @(ViewBag.Current == "Settings" ? "active" : "")">
                     <img src="~/img/settings_icon.svg" class="navicon" />
                     SETTINGS
                 </a>
