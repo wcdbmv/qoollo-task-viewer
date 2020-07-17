@@ -16,7 +16,7 @@ namespace QoolloTaskViewer.ApiServices.Github
         {
             { Difficulty.Easy, new List<string> {"easy", "simple"} },
             { Difficulty.Medium, new List<string> {"medium", "normal", "average"} },
-            { Difficulty.Hard, new List<string> {"medium", "normal", "average"} },
+            { Difficulty.Hard, new List<string> {"hard", "difficult" } },
         };
         private readonly Dictionary<Priority, List<string>> priorityLabels = new Dictionary<Priority, List<string>>
         {
