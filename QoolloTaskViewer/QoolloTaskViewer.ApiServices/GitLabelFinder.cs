@@ -10,7 +10,7 @@ namespace QoolloTaskViewer.ApiServices
 {
     public class GitLabelFinder
     {
-        private readonly List<LabelDto> _labels;
+        private readonly List<string> _labels;
 
         private static readonly Dictionary<Difficulty, List<string>> difficultyLabels = new Dictionary<Difficulty, List<string>>
         {
@@ -33,7 +33,7 @@ namespace QoolloTaskViewer.ApiServices
         private readonly Regex mediumPriorityExpression;
         private readonly Regex highPriorityExpression;
 
-        public GitLabelFinder(List<LabelDto> labels)
+        public GitLabelFinder(List<string> labels)
         {
             _labels = labels;
 
@@ -58,7 +58,7 @@ namespace QoolloTaskViewer.ApiServices
 
             foreach (var label in _labels)
             {
-                string name = label.name.ToLower();
+                string name = label.ToLower();
                 if (easyDifficultyExpression.Match(name).Success)
                 {
                     difficulty = Difficulty.Easy;
@@ -83,7 +83,7 @@ namespace QoolloTaskViewer.ApiServices
 
             foreach (var label in _labels)
             {
-                string name = label.name.ToLower();
+                string name = label.ToLower();
                 if (lowPriorityExpression.Match(name).Success)
                 {
                     priority = Priority.Low;
