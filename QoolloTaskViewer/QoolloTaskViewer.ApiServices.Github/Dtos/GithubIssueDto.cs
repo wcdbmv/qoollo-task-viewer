@@ -12,8 +12,8 @@ namespace QoolloTaskViewer.ApiServices.Github.Dtos
 
         public string body { get; set; }
 
-        public List<LabelDto> labels { get; set; }
-        public MilestoneDto milestone { get; set; }
+        public List<GithubLabelDto> labels { get; set; }
+        public GithubMilestoneDto milestone { get; set; }
 
         public string html_url { get; set; }
     }

@@ -61,7 +61,6 @@ namespace QoolloTaskViewer.ApiServices.Github
 
             foreach (var rawIssue in rawIssues)
             {
-                GitLabelFinder labelFinder = new GitLabelFinder(rawIssue.labels);
                 DateTime dueDate = default;
 
                 if (rawIssue.milestone != null)
@@ -70,13 +69,20 @@ namespace QoolloTaskViewer.ApiServices.Github
                 }
 
                 State issueState = rawIssue.state == "open" ? State.Open : State.Closed;
+                List<string> labels = new List<string>();
+
+                foreach (var label in rawIssue.labels)
+                {
+                    labels.Add(label.name);
+                }
+
+                GitLabelFinder labelFinder = new GitLabelFinder(labels);
 
                 IssueDto issue = new IssueDto
                 {
                     Name = rawIssue.title,
-                    State = issueState,
                     Description = rawIssue.body,
-                    Labels = rawIssue.labels,
+                    Labels = labels,
                     Difficulty = labelFinder.GetDifficulty(),
                     Priority = labelFinder.GetPriority(),
                     DueDate = dueDate,

@@ -4,7 +4,7 @@ using System.Text;
 
 namespace QoolloTaskViewer.ApiServices.Github.Dtos
 {
-    public class MilestoneDto
+    public class GithubMilestoneDto
     {
         public string due_on { get; set; }
     }
