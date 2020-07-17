@@ -37,7 +37,7 @@
                     <img src="~/img/settings_icon.svg" class="navicon" />
                     SETTINGS
                 </a>
-                <a class="nav-link" href="#">
+                <a class="nav-link" data-toggle="modal" data-target="#confirmSignOutModal" href="">
                     <img src="~/img/sign_out_icon.svg" class="navicon" />
                     SIGN OUT
                 </a>
@@ -46,6 +46,23 @@
                 @RenderBody()
             </div>
         </div>
+    </div>
+
+    <div class="modal fade" id="confirmSignOutModal" tabindex="-1" role="dialog" aria-labelledby="confirmSignOutModalLabel" aria-hidden="true">
+          <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                      <div class="modal-header">
+                            <h5 class="modal-title" id="confirmSignOutModalLabel">Sign out</h5>
+                      </div>
+                      <div class="modal-body">
+                            Are you sure you want to sign out?
+                      </div>
+                      <div class="modal-footer">
+                            <button type="button" class="btn" data-dismiss="modal">No</button>
+                            <button type="button" class="btn">Yes</button>
+                      </div>
+                </div>
+          </div>
     </div>
 
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
