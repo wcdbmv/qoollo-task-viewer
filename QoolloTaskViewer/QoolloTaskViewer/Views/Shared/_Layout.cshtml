@@ -9,21 +9,25 @@
     
     <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
 </head>
-<body>
-    <div class="container">
+<body class="min-100">
+    <!-- Hmm, not too elegant -->
+    <div class="bg-mineral-green-light nav-bg"></div>
+    <div class="bg-mineral-green logo-bg"></div>
+
+    <div class="container min-100 d-flex flex-column">
         <header class="row header">
-            <div class="col-3 bg-mineral-green">
-                <img src="~/img/logo.svg" alt="Qoollo Logo" class="logo"/>
+            <div class="col-3 bg-logo">
+                <img src="~/img/logo.svg" alt="Qoollo Logo" class="logo" />
             </div>
-            <div class="col-6 bg-tower-gray">
+            <div class="col-6">
                 <h1>@ViewData["Title"]</h1>
             </div>
-            <div class="col-3 bg-tower-gray">
+            <div class="col-3">
                 <!-- Userpic and username -->
             </div>
         </header>
 
-        <div class="row main">
+        <div class="row main flex-fill">
             <nav class="nav flex-column col-3">
                 <a class="nav-link active" href="#">
                     <img src="~/img/board_icon.svg" class="navicon" />
@@ -40,7 +44,7 @@
             </nav>
             <div class="col-9">
                 @RenderBody()
-            </di>
+            </div>
         </div>
     </div>
 

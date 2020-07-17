@@ -1,6 +1,36 @@
-﻿body {
+﻿html, body {
+    height: 100%;
     font-family: 'Roboto';
     background-color: #E2ECEB;
+}
+
+.min-100 {
+    min-height: 100vh;
+}
+
+.flex-fill {
+    flex: 1 1 auto;
+}
+
+.logo-bg {
+    position: absolute;
+    left: 0;
+    height: 80px;
+    width: 25%;
+}
+
+.nav-bg {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 25%;
+    height: 100%;
+}
+
+.header {
+    height: 80px;
+    background-color: #CEDCDA;
+    border-radius: 0px 30px 30px 0px;
 }
 
 
@@ -19,7 +49,12 @@
 }
 
 .bg-tower-gray {
-    background-color: rgba(176, 194, 193, 0.4);
+    background-color: #CEDCDA;
+}
+
+.bg-logo {
+    background-color: #3D5653;
+    border-radius: 0px 30px 0px 0px;
 }
 
 
@@ -28,6 +63,7 @@
 .nav {
     background-color: #425C59;
     padding: 30px 0px 0px 13px;
+    border-radius: 0px 0px 30px 0px;
 }
 
 .nav-link {
@@ -41,6 +77,16 @@
     color: #3D5653;
 }
 
+.nav-link.active:hover {
+    font-weight: normal;
+    color: #3D5653;
+}
+
+.nav-link:hover {
+    font-weight: bold;
+    color: #E2ECEB;
+}
+
 .navicon {
     padding-left: 10px;
     padding-right: 10px;
@@ -50,7 +96,10 @@
 /* Logo */
 
 .logo {
-    padding: 14px 48px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
 }
 
 
@@ -61,4 +110,9 @@ h1 {
     font-style: normal;
     font-weight: bold;
     font-size: 36px;
+    line-height: 42px;
+    
+    position: absolute;
+    top: 50%;
+    transform: translate(0, -50%);
 }
