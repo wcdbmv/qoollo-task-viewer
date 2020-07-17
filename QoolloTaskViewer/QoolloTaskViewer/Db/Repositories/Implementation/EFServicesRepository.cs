@@ -14,9 +14,11 @@ namespace QoolloTaskViewer.Db.Repositories.Implementation
         {
         }
 
-        public async Task<ServiceModel> FindServiceAsync(Guid id)
+        public Task<ServiceModel> FindServiceAsync(Guid id)
         {
-            return await _context.Services.FindAsync(id);
+            return _context.Services
+                .Include(s => s.Domain)
+                .FirstOrDefaultAsync(s => s.Id == id);
         }
 
         public async Task AddServiceAsync(ServiceModel service)

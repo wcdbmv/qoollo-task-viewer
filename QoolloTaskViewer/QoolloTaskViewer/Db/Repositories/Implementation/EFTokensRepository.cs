@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using QoolloTaskViewer.Models;
@@ -16,17 +17,22 @@ namespace QoolloTaskViewer.Db.Repositories.Implementation
 
         public Task<List<TokenModel>> GetTokensAsync(Guid userId, bool enabledOnly = true)
         {
-            Task<List<TokenModel>> res;
+            Expression<Func<TokenModel, bool>> predicate = t => t.UserId == userId;
             if (enabledOnly)
-                res = _context.Tokens.Where(t => t.UserId == userId && t.Enabled).ToListAsync();
-            else
-                res = _context.Tokens.Where(t => t.UserId == userId).ToListAsync();
-            return res;
+                predicate = t => t.UserId == userId && t.Enabled;
+
+            return _context.Tokens.Where(predicate)
+                    .Include(t => t.Service)
+                        .ThenInclude(s => s.Domain)
+                    .ToListAsync();
         }
 
-        public async Task<TokenModel> FindTokenAsync(Guid id)
+        public Task<TokenModel> FindTokenAsync(Guid id)
         {
-            return await _context.Tokens.FindAsync(id);
+            return _context.Tokens
+                .Include(t => t.Service)
+                    .ThenInclude(s => s.Domain)
+                .FirstOrDefaultAsync(t => t.Id == id);
         }
 
         public async Task AddTokenAsync(TokenModel token)

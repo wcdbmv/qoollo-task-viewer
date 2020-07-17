@@ -14,9 +14,9 @@ namespace QoolloTaskViewer.Db.Repositories.Implementation
         {
         }
 
-        public async Task<UserModel> FindUserAsync(Guid id)
+        public Task<UserModel> FindUserAsync(Guid id)
         {
-            return await _context.Users.FindAsync(id);
+            return _context.Users.Include(u => u.Tokens).FirstOrDefaultAsync(u => u.Id == id);
         }
 
         public async Task AddUserAsync(UserModel user)

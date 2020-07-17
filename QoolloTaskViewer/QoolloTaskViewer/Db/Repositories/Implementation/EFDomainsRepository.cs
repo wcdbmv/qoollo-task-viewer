@@ -14,9 +14,9 @@ namespace QoolloTaskViewer.Db.Repositories.Implementation
         {
         }
 
-        public async Task<DomainModel> FindDomainAsync(Guid id)
+        public Task<DomainModel> FindDomainAsync(Guid id)
         {
-            return await _context.Domains.FindAsync(id);
+            return _context.Domains.FirstOrDefaultAsync(d => d.Id == id);
         }
 
         public async Task AddDomainAsync(DomainModel domain)
