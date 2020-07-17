@@ -16,15 +16,14 @@ namespace QoolloTaskViewer.Db.Repositories
             Context = context;
         }
 
-        public async Task<List<TokenModel>> GetTokensAsync(Guid userId, bool enabledOnly = true)
+        public Task<List<TokenModel>> GetTokensAsync(Guid userId, bool enabledOnly = true)
         {
-            Func<TokenModel, bool> predicate = t => t.UserId.Equals(userId);
+            Task<List<TokenModel>> res;
             if (enabledOnly)
-            {
-                predicate = t => t.UserId.Equals(userId) && t.Enabled;
-            }
-
-            return await Context.Tokens.Where(predicate).ToListAsync(); // BUILD FAIL
+                res = Context.Tokens.Where(t => t.UserId == userId && t.Enabled).ToListAsync();
+            else
+                res = Context.Tokens.Where(t => t.UserId == userId).ToListAsync();
+            return res;
         }
 
         public async Task<TokenModel> FindTokenAsync(Guid id)
