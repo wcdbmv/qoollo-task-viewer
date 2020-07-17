@@ -1,71 +1,64 @@
-﻿/* Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification
-for details on configuring this project to bundle and minify static web assets. */
-
-a.navbar-brand {
-  white-space: normal;
-  text-align: center;
-  word-break: break-all;
+﻿body {
+    font-family: 'Roboto';
+    background-color: #E2ECEB;
 }
 
-/* Provide sufficient contrast against white background */
-a {
-  color: #0366d6;
+
+/* Background */
+
+.bg-mineral-green {
+    background-color: #3D5653;
 }
 
-.btn-primary {
-  color: #fff;
-  background-color: #1b6ec2;
-  border-color: #1861ac;
+.bg-mineral-green-light {
+    background-color: #425C59;
 }
 
-.nav-pills .nav-link.active, .nav-pills .show > .nav-link {
-  color: #fff;
-  background-color: #1b6ec2;
-  border-color: #1861ac;
+.bg-mystic {
+    background-color: #E2ECEB;
 }
 
-/* Sticky footer styles
--------------------------------------------------- */
-html {
-  font-size: 14px;
-}
-@media (min-width: 768px) {
-  html {
-    font-size: 16px;
-  }
+.bg-tower-gray {
+    background-color: rgba(176, 194, 193, 0.4);
 }
 
-.border-top {
-  border-top: 1px solid #e5e5e5;
-}
-.border-bottom {
-  border-bottom: 1px solid #e5e5e5;
+
+/* Navigation */
+
+.nav {
+    background-color: #425C59;
+    padding: 30px 0px 0px 13px;
 }
 
-.box-shadow {
-  box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .05);
+.nav-link {
+    padding: 18px;
+    color: #E2ECEB;
 }
 
-button.accept-policy {
-  font-size: 1rem;
-  line-height: inherit;
+.nav-link.active {
+    background-color: #E2ECEB;
+    border-radius: 30px 0px 0px 30px;
+    color: #3D5653;
 }
 
-/* Sticky footer styles
--------------------------------------------------- */
-html {
-  position: relative;
-  min-height: 100%;
+.navicon {
+    padding-left: 10px;
+    padding-right: 10px;
 }
 
-body {
-  /* Margin bottom by footer height */
-  margin-bottom: 60px;
+
+/* Logo */
+
+.logo {
+    padding: 14px 48px;
 }
-.footer {
-  position: absolute;
-  bottom: 0;
-  width: 100%;
-  white-space: nowrap;
-  line-height: 60px; /* Vertically center the text there */
+
+
+/* Heading */
+
+h1 {
+    color: #3D5653;
+    font-style: normal;
+    font-weight: bold;
+    font-size: 36px;
 }
