@@ -4,7 +4,7 @@ using System.Text;
 
 namespace QoolloTaskViewer.ApiServices
 {
-    public class CommonData
+    public static class CommonData
     {
         public const string AppName = "QoolloTaskViewer";
     }
