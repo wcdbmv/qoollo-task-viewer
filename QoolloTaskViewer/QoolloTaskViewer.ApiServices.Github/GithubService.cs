@@ -81,6 +81,7 @@ namespace QoolloTaskViewer.ApiServices.Github
                 IssueDto issue = new IssueDto
                 {
                     Name = rawIssue.title,
+                    State = issueState,
                     Description = rawIssue.body,
                     Labels = labels,
                     Difficulty = labelFinder.GetDifficulty(),
