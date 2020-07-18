@@ -153,6 +153,15 @@ h5 {
     margin-right: auto;
 }
 
+.task-title-lim {
+    min-height: 48px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+}
+
 .label {
     font-size: 10pt;
     display: inline-block;
@@ -195,13 +204,7 @@ h5 {
 
 /* Text */
 
-p.lim-2 {
-    overflow: hidden;
-    text-overflow: ellipsis;
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
-}
+
 
 /* Filter */
 
