@@ -3,11 +3,16 @@
     ViewBag.Current = "Board";
 }
 
+<!-- Board controllers -->
+
 <div class="row">
-    <button type="button" class="btn unrecognized d-block mr-0 ml-auto" data-toggle="modal" data-target="#unrecognizedModal">
+    <button type="button" class="btn unrecognized-btn d-block mr-0 ml-auto" data-toggle="modal" data-target="#unrecognizedModal">
         Unrecognized
     </button>
 </div>
+
+<!-- Board -->
+<!-- Example of filling the board -->
 
 <div class="row">
     <div class="col-4">
@@ -16,36 +21,133 @@
             <h5 class="task-counter col-6">4</h5>
         </div>
         <div class="task">
-            Task 1
+            <p class="lim-2">Разработать макет веб-приложения</p>
+            <span class="label float-l">
+                GitLab
+            </span>
+            <span class="label float-l">
+                <img src="~/img/priority_icon.svg" class="filter-red" />
+            </span>
+            <span class="label float-l">
+                <img src="~/img/time_icon.svg" />
+                6
+            </span>
+            <span class="label float-l">
+                <img src="~/img/due_date_icon.svg" />
+                Jul, 12
+            </span>
+            <a href="#">
+                <span class="label float-r">
+                    <img src="~/img/detail_icon.svg" />
+                </span>
+            </a>
         </div>
         <div class="task">
-            Task 2
+            <p class="lim-2">Разработать макет приложения</p>
+            <span class="label float-l">
+                GitHub
+            </span>
+            <span class="label float-l">
+                <img src="~/img/priority_icon.svg" class="filter-green" />
+            </span>
+            <span class="label float-l">
+                <img src="~/img/time_icon.svg" />
+                1
+            </span>
+            <span class="label float-l">
+                <img src="~/img/due_date_icon.svg" />
+                Jul, 29
+            </span>
+            <a href="#">
+                <span class="label float-r">
+                    <img src="~/img/detail_icon.svg" />
+                </span>
+            </a>
         </div>
         <div class="task">
-            Task 3
+            <p class="lim-2">Построить схему модулей приложения с потоками данных</p>
+            <span class="label float-l">
+                Jira
+            </span>
+            <span class="label float-l">
+                <img src="~/img/priority_icon.svg" class="filter-yellow" />
+            </span>
+            <span class="label float-l">
+                <img src="~/img/time_icon.svg" />
+                9
+            </span>
+            <span class="label float-l">
+                <img src="~/img/due_date_icon.svg" />
+                Jul, 11
+            </span>
+            <a href="#">
+                <span class="label float-r">
+                    <img src="~/img/detail_icon.svg" />
+                </span>
+            </a>
         </div>
         <div class="task">
-            Task 4
+            <p class="lim-2">Создать файл с описанием основной идеи и функциональности</p>
+            <span class="label float-l">
+                GitLab
+            </span>
+            <span class="label float-l">
+                <img src="~/img/priority_icon.svg" />
+            </span>
+            <span class="label float-l">
+                <img src="~/img/time_icon.svg" />
+                3
+            </span>
+            <span class="label float-l">
+                <img src="~/img/due_date_icon.svg" />
+                Jul, 18
+            </span>
+            <a href="#">
+                <span class="label float-r">
+                    <img src="~/img/detail_icon.svg" />
+                </span>
+            </a>
         </div>
     </div>
 
     <div class="col-4">
         <div class="row">
-            <h5 class="col-6">TO DO</h5>
+            <h5 class="col-6">DOING</h5>
             <h5 class="task-counter col-6">0</h5>
         </div>
     </div>
 
     <div class="col-4">
         <div class="row">
-            <h5 class="col-6">TO DO</h5>
+            <h5 class="col-6">COMPLETED</h5>
             <h5 class="task-counter col-6">1</h5>
         </div>
         <div class="task">
-            Task 5
+            <p class="lim-2">Выбрать проект для практики</p>
+            <span class="label float-l">
+                Jira
+            </span>
+            <span class="label float-l">
+                <img src="~/img/priority_icon.svg" class="filter-yellow" />
+            </span>
+            <span class="label float-l">
+                <img src="~/img/time_icon.svg" />
+                2
+            </span>
+            <span class="label float-l">
+                <img src="~/img/due_date_icon.svg" />
+                Jul, 7
+            </span>
+            <a href="#">
+                <span class="label float-r">
+                    <img src="~/img/detail_icon.svg" />
+                </span>
+            </a>
         </div>
     </div>
 </div>
+
+<!-- Unrecognized -->
 
 <div class="modal fade" id="unrecognizedModal" tabindex="-1" role="dialog" aria-labelledby="unrecognizedModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
@@ -54,11 +156,11 @@
                 <h5 class="modal-title" id="unrecognizedModalLabel">Unrecognized tasks</h5>
             </div>
             <div class="modal-body">
-                <div class="task">
-                    Task 1
+                <div class="task unrecognized-task">
+                    <p class="lim-2">Сделать курсовую по операционным системам</p>
                 </div>
-                <div class="task">
-                    Task 2
+                <div class="task unrecognized-task">
+                    <p class="lim-2">Посмотреть смешные видосы</p>
                 </div>
             </div>
             <div class="modal-footer">

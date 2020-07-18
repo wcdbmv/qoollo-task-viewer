@@ -33,8 +33,12 @@
     border-radius: 0px 30px 30px 0px;
 }
 
-.be-relative {
-    position: static;
+.float-r {
+    float: right;
+}
+
+.float-l {
+    float: left;
 }
 
 
@@ -135,13 +139,30 @@ h5 {
 }
 
 .task {
-    min-height: 100px;
+    height: 100px;
     background-color: rgba(176, 194, 193, 0.2);
     border-radius: 10px;
     margin: 10px 5px;
-    padding: 5px;
+    padding: 10px;
+    color: #333333;
 }
 
+.unrecognized-task {
+    width: 250px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.label {
+    font-size: 10pt;
+    display: inline-block;
+    background-color: #C4C4C4;
+    border-radius: 100px;
+    padding-right: 5px;
+    padding-left: 5px;
+    margin-right: 2px;
+    margin-left: 2px;
+}
 
 /* Button */
 
@@ -166,7 +187,32 @@ h5 {
     box-shadow: 0 0 0 0.2em rgba(61, 86, 83, 0.2) !important;
 }
 
-.unrecognized {
+.unrecognized-btn {
     margin-top: 18px;
     margin-bottom: 19px;
+}
+
+
+/* Text */
+
+p.lim-2 {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+}
+
+/* Filter */
+
+.filter-red {
+    filter: invert(62%) sepia(84%) saturate(4508%) hue-rotate(327deg) brightness(96%) contrast(91%);
+}
+
+.filter-yellow {
+    filter: invert(67%) sepia(58%) saturate(641%) hue-rotate(331deg) brightness(98%) contrast(93%);
+}
+
+.filter-green {
+    filter: invert(48%) sepia(41%) saturate(705%) hue-rotate(93deg) brightness(91%) contrast(96%);
 }
