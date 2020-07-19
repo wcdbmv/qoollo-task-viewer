@@ -20,7 +20,6 @@ namespace QoolloTaskViewer.Controllers
     public class AccountController : Controller
     {
         private readonly IUsersRepository _usersRepository;
-        private readonly PasswordHasher<UserModel> _passwordHasher = new PasswordHasher<UserModel>();
 
         public AccountController(IUsersRepository usersRepository)
         {
@@ -28,9 +27,9 @@ namespace QoolloTaskViewer.Controllers
         }
 
         [HttpGet]
-        public IActionResult Login()
+        public IActionResult Login(string returnUrl = null)
         {
-            return View();
+            return View(new LoginModel { ReturnUrl = returnUrl });
         }
 
         [HttpPost]
@@ -39,16 +38,32 @@ namespace QoolloTaskViewer.Controllers
         {
             if (ModelState.IsValid)
             {
-                UserModel user = await _usersRepository.FindUserAsync(model.Username);
-                if (user != null && VerifyPassword(user, HashPassword(user, model.Password)))
+                var result = await _usersRepository.PasswordSignInAsync(model.Username, model.Password, model.RememberMe);
+                if (result.Succeeded)
                 {
-                    await Authenticate(user);
-
-                    return RedirectToAction("Index", "Home");
+                    if (!string.IsNullOrEmpty(model.ReturnUrl) && Url.IsLocalUrl(model.ReturnUrl))
+                    {
+                        return Redirect(model.ReturnUrl);
+                    }
+                    else
+                    {
+                        return RedirectToAction("Index", "Home");
+                    }
                 }
-                ModelState.AddModelError("", "Wrong username or password");
+                else
+                {
+                    ModelState.AddModelError(string.Empty, "Wrong username or password");
+                }
             }
             return View(model);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Logout()
+        {
+            await _usersRepository.SignOutAsync();
+            return RedirectToAction("Index", "Home");
         }
 
         [HttpGet]
@@ -63,50 +78,33 @@ namespace QoolloTaskViewer.Controllers
         {
             if (ModelState.IsValid)
             {
-                UserModel user = await _usersRepository.FindUserAsync(model.Username);
+                UserModel user = await _usersRepository.FindUserByNameAsync(model.Username);
                 if (user == null)
                 {
-                    user = new UserModel() {
-                        Username = model.Username
+                    user = new UserModel
+                    {
+                        UserName = model.Username,
+                        Email = model.Username,
                     };
-                    user.PasswordHash = HashPassword(user, model.Password);
-
-                    await _usersRepository.AddUserAsync(user);
-
-                    await Authenticate(user);
-
-                    return RedirectToAction("Index", "Home");
+                    var result = await _usersRepository.CreateUserAsync(user, model.Password);
+                    if (result.Succeeded)
+                    {
+                        return RedirectToAction("Index", "Home");
+                    }
+                    else
+                    {
+                        foreach (var error in result.Errors)
+                        {
+                            ModelState.AddModelError(string.Empty, error.Description);
+                        }
+                    }
                 }
                 else
                 {
-                    ModelState.AddModelError("", "Username already in use");
+                    ModelState.AddModelError(string.Empty, "Username already in use");
                 }
             }
             return View(model);
-        }
-
-        private bool VerifyPassword(UserModel user, string password)
-        {
-            return _passwordHasher.VerifyHashedPassword(user, user.PasswordHash, password) != PasswordVerificationResult.Failed;
-        }
-
-        private string HashPassword(UserModel user, string password)
-        {
-            return _passwordHasher.HashPassword(user, password);
-        }
-
-        private async Task Authenticate(UserModel user)
-        {
-            var claims = new List<Claim>
-            {
-                new Claim(ClaimsIdentity.DefaultNameClaimType, user.Username),
-                new Claim(ClaimsIdentity.DefaultRoleClaimType, "User"),
-            };
-
-            ClaimsIdentity id = new ClaimsIdentity(claims, "ApplicationCookie", ClaimsIdentity.DefaultNameClaimType,
-                ClaimsIdentity.DefaultRoleClaimType);
-
-            await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(id));
         }
     }
 }

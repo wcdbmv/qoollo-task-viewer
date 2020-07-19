@@ -33,6 +33,9 @@ namespace QoolloTaskViewer
             services.AddDbContextPool<QoolloTaskViewerContext>(options =>
                 options.UseNpgsql(Configuration.GetConnectionString("DefaultConnection")));
 
+            services.AddIdentity<UserModel, IdentityRole>()
+                .AddEntityFrameworkStores<QoolloTaskViewerContext>();
+
             services.AddTransient<IUsersRepository, EFUsersRepository>();
 
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(options =>

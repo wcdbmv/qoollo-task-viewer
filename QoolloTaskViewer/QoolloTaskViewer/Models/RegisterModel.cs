@@ -11,8 +11,9 @@ namespace QoolloTaskViewer.Models
         [DataType(DataType.Password)]
         public string Password { get; set; }
 
-        [DataType(DataType.Password)]
+        [Required(ErrorMessage = "Confirm password required")]
         [Compare("Password", ErrorMessage = "Wrong password")]
+        [DataType(DataType.Password)]
         public string ConfirmPassword { get; set; }
     }
 }

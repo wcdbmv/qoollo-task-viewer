@@ -12,11 +12,9 @@ namespace QoolloTaskViewer.Db.Configuration
     {
         public void Configure(EntityTypeBuilder<UserModel> builder)
         {
-            builder.Property(u => u.Username).IsRequired();
-            builder.Property(u => u.Username).HasMaxLength(255);
-            builder.HasAlternateKey(u => u.Username);
-
-            builder.Property(u => u.PasswordHash).IsRequired();
+            builder.Property(u => u.UserName).IsRequired();
+            builder.Property(u => u.UserName).HasMaxLength(255);
+            builder.HasAlternateKey(u => u.UserName);
         }
     }
 }

@@ -15,7 +15,7 @@ namespace QoolloTaskViewer.Db.Repositories.Implementation
         {
         }
 
-        public Task<List<TokenModel>> GetTokensAsync(Guid userId, bool enabledOnly = true)
+        public Task<List<TokenModel>> GetTokensAsync(string userId, bool enabledOnly = true)
         {
             Expression<Func<TokenModel, bool>> predicate = t => t.UserId == userId;
             if (enabledOnly)

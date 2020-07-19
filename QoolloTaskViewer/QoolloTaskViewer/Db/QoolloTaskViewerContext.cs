@@ -2,13 +2,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using QoolloTaskViewer.Db.Configuration;
 using QoolloTaskViewer.Models;
 
 namespace QoolloTaskViewer.Db
 {
-    public class QoolloTaskViewerContext : DbContext
+    public class QoolloTaskViewerContext : IdentityDbContext<UserModel>
     {
         public DbSet<UserModel> Users { get; set; }
         public DbSet<DomainModel> Domains { get; set; }
@@ -22,6 +23,8 @@ namespace QoolloTaskViewer.Db
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            base.OnModelCreating(modelBuilder);
+
             modelBuilder.ApplyConfiguration(new UserConfiguration());
             modelBuilder.ApplyConfiguration(new DomainConfiguration());
             modelBuilder.ApplyConfiguration(new ServiceConfiguration());
