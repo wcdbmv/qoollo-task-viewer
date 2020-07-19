@@ -2,26 +2,29 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Threading.Tasks;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using QoolloTaskViewer.Db;
 using QoolloTaskViewer.Db.Repositories;
 using QoolloTaskViewer.Db.Repositories.Implementation;
 using QoolloTaskViewer.Models;
-using System.Security.Cryptography;
 
 namespace QoolloTaskViewer.Controllers
 {
     public class AccountController : Controller
     {
-        private readonly UnitOfWork _unitOfWork;
+        private readonly IUsersRepository _usersRepository;
+        private readonly PasswordHasher<UserModel> _passwordHasher = new PasswordHasher<UserModel>();
 
-        public AccountController()
+        public AccountController(IUsersRepository usersRepository)
         {
+            _usersRepository = usersRepository;
         }
 
         [HttpGet]
@@ -36,8 +39,8 @@ namespace QoolloTaskViewer.Controllers
         {
             if (ModelState.IsValid)
             {
-                UserModel user = await _unitOfWork.UsersRepository.FindUserAsync(model.Username, model.Password);
-                if (user != null)
+                UserModel user = await _usersRepository.FindUserAsync(model.Username);
+                if (user != null && VerifyPassword(user, HashPassword(user, model.Password)))
                 {
                     await Authenticate(user);
 
@@ -60,16 +63,15 @@ namespace QoolloTaskViewer.Controllers
         {
             if (ModelState.IsValid)
             {
-                UserModel user = await _unitOfWork.UsersRepository.FindUserAsync(model.Username, model.Password);
+                UserModel user = await _usersRepository.FindUserAsync(model.Username);
                 if (user == null)
                 {
-                    user = new UserModel
-                    {
-                        Username = model.Username,
-                        PasswordHash = model.Password,
+                    user = new UserModel() {
+                        Username = model.Username
                     };
+                    user.PasswordHash = HashPassword(user, model.Password);
 
-                    await _unitOfWork.UsersRepository.AddUserAsync(user);
+                    await _usersRepository.AddUserAsync(user);
 
                     await Authenticate(user);
 
@@ -77,10 +79,20 @@ namespace QoolloTaskViewer.Controllers
                 }
                 else
                 {
-                    ModelState.AddModelError("", "Invalid username or password");
+                    ModelState.AddModelError("", "Username already in use");
                 }
             }
             return View(model);
+        }
+
+        private bool VerifyPassword(UserModel user, string password)
+        {
+            return _passwordHasher.VerifyHashedPassword(user, user.PasswordHash, password) != PasswordVerificationResult.Failed;
+        }
+
+        private string HashPassword(UserModel user, string password)
+        {
+            return _passwordHasher.HashPassword(user, password);
         }
 
         private async Task Authenticate(UserModel user)

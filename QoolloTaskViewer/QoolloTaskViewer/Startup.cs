@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -13,6 +14,7 @@ using Microsoft.Extensions.Hosting;
 using QoolloTaskViewer.Db;
 using QoolloTaskViewer.Db.Repositories;
 using QoolloTaskViewer.Db.Repositories.Implementation;
+using QoolloTaskViewer.Models;
 
 namespace QoolloTaskViewer
 {
@@ -31,13 +33,13 @@ namespace QoolloTaskViewer
             services.AddDbContextPool<QoolloTaskViewerContext>(options =>
                 options.UseNpgsql(Configuration.GetConnectionString("DefaultConnection")));
 
+            services.AddTransient<IUsersRepository, EFUsersRepository>();
+
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(options =>
             {
                 options.LoginPath = new Microsoft.AspNetCore.Http.PathString("/Account/login");
                 options.AccessDeniedPath = new Microsoft.AspNetCore.Http.PathString("/Account/login");
             });
-
-
 
             services.AddControllersWithViews();
         }
