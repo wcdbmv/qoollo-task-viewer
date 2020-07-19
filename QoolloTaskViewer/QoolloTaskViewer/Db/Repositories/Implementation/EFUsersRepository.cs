@@ -14,6 +14,15 @@ namespace QoolloTaskViewer.Db.Repositories.Implementation
         {
         }
 
+        public Task<UserModel> FindUserAsync(string username, string password)
+        {
+            return _context.Users
+                .Include(u => u.Tokens)
+                    .ThenInclude(t => t.Service)
+                        .ThenInclude(s => s.Domain)
+                .FirstOrDefaultAsync(u => u.Username == username && u.PasswordHash == password);
+        }
+
         public Task<UserModel> FindUserAsync(Guid id)
         {
             return _context.Users

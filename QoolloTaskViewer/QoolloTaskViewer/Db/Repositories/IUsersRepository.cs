@@ -8,6 +8,7 @@ namespace QoolloTaskViewer.Db.Repositories
 {
     public interface IUsersRepository
     {
+        Task<UserModel> FindUserAsync(string username, string password);
         Task<UserModel> FindUserAsync(Guid id);
         Task AddUserAsync(UserModel user);
         Task UpdateUserAsync(UserModel user);
