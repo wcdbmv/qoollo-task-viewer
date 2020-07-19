@@ -63,14 +63,14 @@ namespace QoolloTaskViewer.ApiServices.Gitlab
             {
                 DateTime dueDate = default;
 
+                GitLabelFinder labelFinder = new GitLabelFinder(rawIssue.labels);
+
+                State issueState = rawIssue.state == "closed" ? State.Closed : labelFinder.GetState();
+
                 if (rawIssue.due_date != null)
                 {
                     dueDate = DateTime.Parse(rawIssue.due_date);
                 }
-
-                State issueState = rawIssue.state == "opened" ? State.Open : State.Closed;
-
-                GitLabelFinder labelFinder = new GitLabelFinder(rawIssue.labels);
 
                 IssueDto issue = new IssueDto
                 {

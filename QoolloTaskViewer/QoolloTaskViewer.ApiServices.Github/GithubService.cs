@@ -63,12 +63,6 @@ namespace QoolloTaskViewer.ApiServices.Github
             {
                 DateTime dueDate = default;
 
-                if (rawIssue.milestone != null)
-                {
-                    dueDate = DateTime.Parse(rawIssue.milestone.due_on);
-                }
-
-                State issueState = rawIssue.state == "open" ? State.Open : State.Closed;
                 List<string> labels = new List<string>();
 
                 foreach (var label in rawIssue.labels)
@@ -78,6 +72,13 @@ namespace QoolloTaskViewer.ApiServices.Github
 
                 GitLabelFinder labelFinder = new GitLabelFinder(labels);
 
+                if (rawIssue.milestone != null)
+                {
+                    dueDate = DateTime.Parse(rawIssue.milestone.due_on);
+                }
+
+                State issueState = rawIssue.state == "closed" ? State.Closed : labelFinder.GetState();
+                
                 IssueDto issue = new IssueDto
                 {
                     Name = rawIssue.title,
@@ -92,7 +93,7 @@ namespace QoolloTaskViewer.ApiServices.Github
                         ServiceType = ServiceType.Github
                     },
                     Url = rawIssue.html_url
-            };
+                };
 
                 issues.Add(issue);
             }
