@@ -24,6 +24,12 @@ namespace QoolloTaskViewer.ApiServices
             { Priority.Medium, new List<string> {"middle"} },
             { Priority.High, new List<string> { "high", "top"} },
         };
+        private readonly Dictionary<State, List<string>> stateLabels = new Dictionary<State, List<string>>
+        {
+            { State.ToDo, new List<string> {"to-do", "todo", "to do"} },
+            { State.Doing, new List<string> {"doing"} },
+            { State.Review, new List<string> {"review"} }
+        };
 
         private readonly Regex easyDifficultyExpression;
         private readonly Regex mediumyDifficultyExpression;
@@ -33,23 +39,34 @@ namespace QoolloTaskViewer.ApiServices
         private readonly Regex mediumPriorityExpression;
         private readonly Regex highPriorityExpression;
 
+        private readonly Regex toDoStateExpression;
+        private readonly Regex doingStateExpression;
+        private readonly Regex reviewStateExpression;
+
         public GitLabelFinder(List<string> labels)
         {
             _labels = labels;
 
             easyDifficultyExpression = new Regex(string.Join("|", difficultyLabels[Difficulty.Easy].Select(Regex.Escape).ToArray()),
-            RegexOptions.Singleline | RegexOptions.Compiled);
+                RegexOptions.Singleline | RegexOptions.Compiled);
             mediumyDifficultyExpression = new Regex(string.Join("|", difficultyLabels[Difficulty.Medium].Select(Regex.Escape).ToArray()),
-            RegexOptions.Singleline | RegexOptions.Compiled);
+                RegexOptions.Singleline | RegexOptions.Compiled);
             hardDifficultyExpression = new Regex(string.Join("|", difficultyLabels[Difficulty.Hard].Select(Regex.Escape).ToArray()),
-            RegexOptions.Singleline | RegexOptions.Compiled);
+                RegexOptions.Singleline | RegexOptions.Compiled);
 
             lowPriorityExpression = new Regex(string.Join("|", priorityLabels[Priority.Low].Select(Regex.Escape).ToArray()),
-            RegexOptions.Singleline | RegexOptions.Compiled);
+                RegexOptions.Singleline | RegexOptions.Compiled);
             mediumPriorityExpression = new Regex(string.Join("|", priorityLabels[Priority.Medium].Select(Regex.Escape).ToArray()),
-            RegexOptions.Singleline | RegexOptions.Compiled);
+                RegexOptions.Singleline | RegexOptions.Compiled);
             highPriorityExpression = new Regex(string.Join("|", priorityLabels[Priority.High].Select(Regex.Escape).ToArray()),
-            RegexOptions.Singleline | RegexOptions.Compiled);
+                RegexOptions.Singleline | RegexOptions.Compiled);
+
+            toDoStateExpression = new Regex(string.Join("|", stateLabels[State.ToDo].Select(Regex.Escape).ToArray()),
+                RegexOptions.Singleline | RegexOptions.Compiled);
+            doingStateExpression = new Regex(string.Join("|", stateLabels[State.Doing].Select(Regex.Escape).ToArray()),
+                RegexOptions.Singleline | RegexOptions.Compiled);
+            reviewStateExpression = new Regex(string.Join("|", stateLabels[State.Review].Select(Regex.Escape).ToArray()),
+                RegexOptions.Singleline | RegexOptions.Compiled);
         }
 
         public Difficulty GetDifficulty()
@@ -99,6 +116,30 @@ namespace QoolloTaskViewer.ApiServices
             }
 
             return priority;
+        }
+
+        public State GetState()
+        {
+            State state = State.Unrecognized;
+
+            foreach (var label in _labels)
+            {
+                string name = label.ToLower();
+                if (toDoStateExpression.Match(name).Success)
+                {
+                    state = State.ToDo;
+                }
+                else if (doingStateExpression.Match(name).Success)
+                {
+                    state = State.Doing;
+                }
+                else if (reviewStateExpression.Match(name).Success)
+                {
+                    state = State.Review;
+                }
+            }
+
+            return state;
         }
     }
 }
