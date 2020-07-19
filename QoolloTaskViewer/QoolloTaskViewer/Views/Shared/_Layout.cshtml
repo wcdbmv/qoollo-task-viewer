@@ -10,11 +10,13 @@
     <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
 </head>
 <body class="min-100">
-    <!-- Hmm, not too elegant -->
-    <div class="bg-mineral-green-light nav-bg"></div>
+    <div class="bg-mineral-green-light nav-bg"></div> <!-- Hmm, not too elegant -->
     <div class="bg-mineral-green logo-bg"></div>
 
     <div class="container min-100 d-flex flex-column">
+
+        <!-- Header -->
+
         <header class="row header">
             <div class="col-3 bg-logo">
                 <img src="~/img/logo.svg" alt="Qoollo Logo" class="logo" />
@@ -23,11 +25,14 @@
                 <h1>@ViewData["Title"]</h1>
             </div>
             <div class="col-3">
-                <!-- Userpic and username -->
+                <!-- TODO: Userpic and username -->
             </div>
         </header>
 
         <div class="row main flex-fill">
+
+            <!-- Navigation -->
+
             <nav class="nav flex-column col-3">
                 <a asp-action="index" asp-controller="Board" class="nav-link @(ViewBag.Current == "Board" ? "active" : "")">
                     <img src="~/img/board_icon.svg" class="navicon" />
@@ -42,27 +47,32 @@
                     SIGN OUT
                 </a>
             </nav>
+
+            <!-- Board -->
+
             <div class="col-9">
                 @RenderBody()
             </div>
         </div>
     </div>
 
+    <!-- Sign out confirmation -->
+
     <div class="modal fade" id="confirmSignOutModal" tabindex="-1" role="dialog" aria-labelledby="confirmSignOutModalLabel" aria-hidden="true">
-          <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                      <div class="modal-header">
-                            <h5 class="modal-title" id="confirmSignOutModalLabel">Sign out</h5>
-                      </div>
-                      <div class="modal-body">
-                            Are you sure you want to sign out?
-                      </div>
-                      <div class="modal-footer">
-                            <button type="button" class="btn" data-dismiss="modal">No</button>
-                            <button type="button" class="btn">Yes</button>
-                      </div>
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="confirmSignOutModalLabel">Sign out</h5>
                 </div>
-          </div>
+                <div class="modal-body">
+                    Are you sure you want to sign out?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn" data-dismiss="modal">No</button>
+                    <button type="button" class="btn">Yes</button>
+                </div>
+            </div>
+        </div>
     </div>
 
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
