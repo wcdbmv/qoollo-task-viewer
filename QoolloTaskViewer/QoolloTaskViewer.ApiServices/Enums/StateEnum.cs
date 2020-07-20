@@ -6,7 +6,10 @@ namespace QoolloTaskViewer.ApiServices.Enums
 {
     public enum State
     {
-        Open,
+        Unrecognized,
+        ToDo,
+        Doing,
+        Review,
         Closed
     }
 }
