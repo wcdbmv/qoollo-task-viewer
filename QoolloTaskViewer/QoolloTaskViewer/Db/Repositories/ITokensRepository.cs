@@ -8,7 +8,7 @@ namespace QoolloTaskViewer.Db.Repositories
 {
     public interface ITokensRepository
     {
-        Task<List<TokenModel>> GetTokensAsync(Guid userId, bool enabledOnly = true);
+        Task<List<TokenModel>> GetTokensAsync(string userId, bool enabledOnly = true);
         Task<TokenModel> FindTokenAsync(Guid id);
         Task AddTokenAsync(TokenModel token);
         Task UpdateTokenAsync(TokenModel token);
