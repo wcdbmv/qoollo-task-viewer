@@ -37,6 +37,9 @@ namespace QoolloTaskViewer
                 .AddEntityFrameworkStores<QoolloTaskViewerContext>();
 
             services.AddTransient<IUsersRepository, EFUsersRepository>();
+            services.AddTransient<IDomainsRepository, EFDomainsRepository>();
+            services.AddTransient<IServicesRepository, EFServicesRepository>();
+            services.AddTransient<ITokensRepository, EFTokensRepository>();
 
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(options =>
             {
