@@ -20,10 +20,12 @@ namespace QoolloTaskViewer.Controllers
     public class AccountController : Controller
     {
         private readonly IUsersRepository _usersRepository;
+        private readonly SignInManager<UserModel> _signInManager;
 
-        public AccountController(IUsersRepository usersRepository)
+        public AccountController(IUsersRepository usersRepository, SignInManager<UserModel> signInManager)
         {
             _usersRepository = usersRepository;
+            _signInManager = signInManager;
         }
 
         [HttpGet]
@@ -38,7 +40,7 @@ namespace QoolloTaskViewer.Controllers
         {
             if (ModelState.IsValid)
             {
-                var result = await _usersRepository.PasswordSignInAsync(model.Username, model.Password, model.RememberMe);
+                var result = await _signInManager.PasswordSignInAsync(model.Username, model.Password, model.RememberMe, false);
                 if (result.Succeeded)
                 {
                     if (!string.IsNullOrEmpty(model.ReturnUrl) && Url.IsLocalUrl(model.ReturnUrl))
@@ -62,7 +64,7 @@ namespace QoolloTaskViewer.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Logout()
         {
-            await _usersRepository.SignOutAsync();
+            await _signInManager.SignOutAsync();
             return RedirectToAction("Index", "Home");
         }
 
@@ -89,6 +91,7 @@ namespace QoolloTaskViewer.Controllers
                     var result = await _usersRepository.CreateUserAsync(user, model.Password);
                     if (result.Succeeded)
                     {
+                        await _signInManager.SignInAsync(user, false);
                         return RedirectToAction("Index", "Home");
                     }
                     else

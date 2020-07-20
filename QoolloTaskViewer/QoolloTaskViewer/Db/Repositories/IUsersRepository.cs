@@ -12,8 +12,6 @@ namespace QoolloTaskViewer.Db.Repositories
         Task<UserModel> FindUserByNameAsync(string username);
         Task<UserModel> FindUserByIdAsync(string id);
         Task<IdentityResult> CreateUserAsync(UserModel user, string password);
-        Task<SignInResult> PasswordSignInAsync(string username, string password, bool rememberMe);
-        Task SignOutAsync();
         Task UpdateUserAsync(UserModel user);
         Task RemoveUserAsync(UserModel user);
     }

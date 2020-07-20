@@ -11,13 +11,11 @@ namespace QoolloTaskViewer.Db.Repositories.Implementation
     public class EFUsersRepository : EFBaseRepository, IUsersRepository
     {
         private readonly UserManager<UserModel> _userManager;
-        private readonly SignInManager<UserModel> _signInManager;
 
-        public EFUsersRepository(QoolloTaskViewerContext context, UserManager<UserModel> userManager, SignInManager<UserModel> signInManager)
+        public EFUsersRepository(QoolloTaskViewerContext context, UserManager<UserModel> userManager)
             : base(context)
         {
             _userManager = userManager;
-            _signInManager = signInManager;
         }
 
         public Task<UserModel> FindUserByNameAsync(string username)
@@ -40,24 +38,7 @@ namespace QoolloTaskViewer.Db.Repositories.Implementation
 
         public async Task<IdentityResult> CreateUserAsync(UserModel user, string password)
         {
-            var result = await _userManager.CreateAsync(user, password);
-
-            if (result.Succeeded)
-            {
-                await _signInManager.SignInAsync(user, false);
-            }
-
-            return result;
-        }
-
-        public async Task<SignInResult> PasswordSignInAsync(string username, string password, bool rememberMe)
-        {
-            return await _signInManager.PasswordSignInAsync(username, password, rememberMe, false);
-        }
-
-        public async Task SignOutAsync()
-        {
-            await _signInManager.SignOutAsync();
+            return await _userManager.CreateAsync(user, password);
         }
 
         public Task UpdateUserAsync(UserModel user)
