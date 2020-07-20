@@ -27,12 +27,12 @@ namespace QoolloTaskViewer.ApiServices
         private readonly Dictionary<State, List<string>> stateLabels = new Dictionary<State, List<string>>
         {
             { State.ToDo, new List<string> {"to-do", "todo", "to do"} },
-            { State.Doing, new List<string> {"doing"} },
-            { State.Review, new List<string> {"review"} }
+            { State.Doing, new List<string> {"doing", "in progress"} },
+            { State.Review, new List<string> {"review", "code review"} }
         };
 
         private readonly Regex easyDifficultyExpression;
-        private readonly Regex mediumyDifficultyExpression;
+        private readonly Regex mediumDifficultyExpression;
         private readonly Regex hardDifficultyExpression;
 
         private readonly Regex lowPriorityExpression;
@@ -49,7 +49,7 @@ namespace QoolloTaskViewer.ApiServices
 
             easyDifficultyExpression = new Regex(string.Join("|", difficultyLabels[Difficulty.Easy].Select(Regex.Escape).ToArray()),
                 RegexOptions.Singleline | RegexOptions.Compiled);
-            mediumyDifficultyExpression = new Regex(string.Join("|", difficultyLabels[Difficulty.Medium].Select(Regex.Escape).ToArray()),
+            mediumDifficultyExpression = new Regex(string.Join("|", difficultyLabels[Difficulty.Medium].Select(Regex.Escape).ToArray()),
                 RegexOptions.Singleline | RegexOptions.Compiled);
             hardDifficultyExpression = new Regex(string.Join("|", difficultyLabels[Difficulty.Hard].Select(Regex.Escape).ToArray()),
                 RegexOptions.Singleline | RegexOptions.Compiled);
@@ -80,7 +80,7 @@ namespace QoolloTaskViewer.ApiServices
                 {
                     difficulty = Difficulty.Easy;
                 }
-                else if (mediumyDifficultyExpression.Match(name).Success)
+                else if (mediumDifficultyExpression.Match(name).Success)
                 {
                     difficulty = Difficulty.Medium;
 

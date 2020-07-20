@@ -38,7 +38,7 @@ namespace QoolloTaskViewer.ApiServices.Github
             Client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _token);
         }
 
-        public async Task<List<IssueDto>> GeatAllIssuesAsync()
+        public async Task<List<IssueDto>> GetAllIssuesAsync()
         {
             var query = "/issues?scope=assigned_to_me";
             var stringTask = await Client.GetStreamAsync(baseAddress + query);

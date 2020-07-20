@@ -10,6 +10,6 @@ namespace QoolloTaskViewer.ApiServices
 {
     public interface IApiService
     {
-        Task<List<IssueDto>> GeatAllIssuesAsync();
+        Task<List<IssueDto>> GetAllIssuesAsync();
     }
 }

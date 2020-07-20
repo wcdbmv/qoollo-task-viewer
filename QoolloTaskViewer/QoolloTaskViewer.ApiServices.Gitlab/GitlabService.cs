@@ -38,7 +38,7 @@ namespace QoolloTaskViewer.ApiServices.Gitlab
             Client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _token);
         }
 
-        public async Task<List<IssueDto>> GeatAllIssuesAsync()
+        public async Task<List<IssueDto>> GetAllIssuesAsync()
         {
             var query = "/issues?scope=assigned_to_me";
             var stringTask = await Client.GetStreamAsync(baseAddress + query);
@@ -52,10 +52,10 @@ namespace QoolloTaskViewer.ApiServices.Gitlab
                 return null;
             }
 
-            return MappIssues(rawIssues);
+            return MapIssues(rawIssues);
         }
 
-        List<IssueDto> MappIssues(List<GitlabIssueDto> rawIssues)
+        List<IssueDto> MapIssues(List<GitlabIssueDto> rawIssues)
         {
             List<IssueDto> issues = new List<IssueDto>();
 
