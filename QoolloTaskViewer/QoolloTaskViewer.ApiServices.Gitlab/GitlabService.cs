@@ -8,6 +8,7 @@ using System.Net.Http.Headers;
 using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
+using QoolloTaskViewer.Models;
 
 namespace QoolloTaskViewer.ApiServices.Gitlab
 {
@@ -40,7 +41,7 @@ namespace QoolloTaskViewer.ApiServices.Gitlab
 
         public async Task<List<IssueDto>> GetAllIssuesAsync()
         {
-            var query = "/issues?scope=assigned_to_me";
+            string query = "/issues?scope=assigned_to_me";
             var stringTask = await Client.GetStreamAsync(baseAddress + query);
             List<GitlabIssueDto> rawIssues;
             try
@@ -61,16 +62,11 @@ namespace QoolloTaskViewer.ApiServices.Gitlab
 
             foreach (var rawIssue in rawIssues)
             {
-                DateTime dueDate = default;
+                DateTime dueDate = rawIssue.due_date == null ? default : DateTime.Parse(rawIssue.due_date);
 
-                GitLabelFinder labelFinder = new GitLabelFinder(rawIssue.labels);
+                LabelFinder labelFinder = new LabelFinder(rawIssue.labels);
 
                 State issueState = rawIssue.state == "closed" ? State.Closed : labelFinder.GetState();
-
-                if (rawIssue.due_date != null)
-                {
-                    dueDate = DateTime.Parse(rawIssue.due_date);
-                }
 
                 IssueDto issue = new IssueDto
                 {
@@ -83,7 +79,7 @@ namespace QoolloTaskViewer.ApiServices.Gitlab
                     DueDate = dueDate,
                     ServiceInfo = new ServiceInfoDto
                     {
-                        ServiceType = ServiceType.Gitlab
+                        ServiceType = ServiceType.GitLab
                     },
                     Url = rawIssue.web_url
                 };

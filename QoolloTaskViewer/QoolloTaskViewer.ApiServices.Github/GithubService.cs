@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using QoolloTaskViewer.ApiServices.Github.Dtos;
 using QoolloTaskViewer.ApiServices.Dtos;
 using QoolloTaskViewer.ApiServices.Enums;
+using QoolloTaskViewer.Models;
 
 namespace QoolloTaskViewer.ApiServices.Github
 {
@@ -40,7 +41,7 @@ namespace QoolloTaskViewer.ApiServices.Github
 
         public async Task<List<IssueDto>> GetAllIssuesAsync()
         {
-            var query = "/issues?scope=assigned_to_me";
+            string query = "/issues?scope=assigned_to_me";
             var stringTask = await Client.GetStreamAsync(baseAddress + query);
             List<GithubIssueDto> rawIssues;
             try
@@ -70,9 +71,9 @@ namespace QoolloTaskViewer.ApiServices.Github
                     labels.Add(label.name);
                 }
 
-                GitLabelFinder labelFinder = new GitLabelFinder(labels);
+                LabelFinder labelFinder = new LabelFinder(labels);
 
-                if (rawIssue.milestone != null)
+                if (rawIssue.milestone != null && rawIssue.milestone.due_on != null)
                 {
                     dueDate = DateTime.Parse(rawIssue.milestone.due_on);
                 }
@@ -90,7 +91,7 @@ namespace QoolloTaskViewer.ApiServices.Github
                     DueDate = dueDate,
                     ServiceInfo = new ServiceInfoDto
                     {
-                        ServiceType = ServiceType.Github
+                        ServiceType = ServiceType.GitHub
                     },
                     Url = rawIssue.html_url
                 };
