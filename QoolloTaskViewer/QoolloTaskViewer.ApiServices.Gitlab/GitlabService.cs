@@ -1,27 +1,27 @@
-﻿using System;
+﻿using QoolloTaskViewer.ApiServices.Dtos;
+using QoolloTaskViewer.ApiServices.Enums;
+using QoolloTaskViewer.ApiServices.Gitlab.Dtos;
+using System;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
-using QoolloTaskViewer.ApiServices.Github.Dtos;
-using QoolloTaskViewer.ApiServices.Dtos;
-using QoolloTaskViewer.ApiServices.Enums;
 
-namespace QoolloTaskViewer.ApiServices.Github
+namespace QoolloTaskViewer.ApiServices.Gitlab
 {
-    public class GithubService : IApiService
+    public class GitlabService : IApiService
     {
-        private readonly string baseAddress = "https://api.github.com";
-
+        private readonly string baseAddress;
         private readonly string _token;
 
         private HttpClient Client { get; set; }
 
-        public GithubService(string token)
+        public GitlabService(string token, string address)
         {
             _token = token;
+            baseAddress = address;
             CreateClient();
             AuthorizeClient();
         }
@@ -42,10 +42,10 @@ namespace QoolloTaskViewer.ApiServices.Github
         {
             var query = "/issues?scope=assigned_to_me";
             var stringTask = await Client.GetStreamAsync(baseAddress + query);
-            List<GithubIssueDto> rawIssues;
+            List<GitlabIssueDto> rawIssues;
             try
             {
-                rawIssues = await JsonSerializer.DeserializeAsync<List<GithubIssueDto>>(stringTask);
+                rawIssues = await JsonSerializer.DeserializeAsync<List<GitlabIssueDto>>(stringTask);
             }
             catch (JsonException)
             {
@@ -55,7 +55,7 @@ namespace QoolloTaskViewer.ApiServices.Github
             return MapIssues(rawIssues);
         }
 
-        List<IssueDto> MapIssues(List<GithubIssueDto> rawIssues)
+        List<IssueDto> MapIssues(List<GitlabIssueDto> rawIssues)
         {
             List<IssueDto> issues = new List<IssueDto>();
 
@@ -63,36 +63,29 @@ namespace QoolloTaskViewer.ApiServices.Github
             {
                 DateTime dueDate = default;
 
-                List<string> labels = new List<string>();
-
-                foreach (var label in rawIssue.labels)
-                {
-                    labels.Add(label.name);
-                }
-
-                GitLabelFinder labelFinder = new GitLabelFinder(labels);
-
-                if (rawIssue.milestone != null)
-                {
-                    dueDate = DateTime.Parse(rawIssue.milestone.due_on);
-                }
+                GitLabelFinder labelFinder = new GitLabelFinder(rawIssue.labels);
 
                 State issueState = rawIssue.state == "closed" ? State.Closed : labelFinder.GetState();
-                
+
+                if (rawIssue.due_date != null)
+                {
+                    dueDate = DateTime.Parse(rawIssue.due_date);
+                }
+
                 IssueDto issue = new IssueDto
                 {
                     Name = rawIssue.title,
                     State = issueState,
-                    Description = rawIssue.body,
-                    Labels = labels,
+                    Description = rawIssue.description,
+                    Labels = rawIssue.labels,
                     Difficulty = labelFinder.GetDifficulty(),
                     Priority = labelFinder.GetPriority(),
                     DueDate = dueDate,
                     ServiceInfo = new ServiceInfoDto
                     {
-                        ServiceType = ServiceType.Github
+                        ServiceType = ServiceType.Gitlab
                     },
-                    Url = rawIssue.html_url
+                    Url = rawIssue.web_url
                 };
 
                 issues.Add(issue);

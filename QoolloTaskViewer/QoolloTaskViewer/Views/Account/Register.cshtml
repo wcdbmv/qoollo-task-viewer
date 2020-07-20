@@ -1,0 +1,29 @@
+﻿@model QoolloTaskViewer.Models.RegisterModel
+
+<h2>Sign Up</h2>
+
+<a asp-action="Login" asp-controller="Account">Sign In</a>
+
+<form asp-action="Register" asp-controller="Account" asp-anti-forgery="true">
+    <div class="validation" asp-validation-summary="ModelOnly"></div>
+    <div>
+        <div>
+            <label asp-for="Username">Input username</label><br />
+            <input type="text" asp-for="Username" />
+            <span asp-validation-for="Username" />
+        </div>
+        <div>
+            <label asp-for="Password">Input password</label><br />
+            <input asp-for="Password" />
+            <span asp-validation-for="Password" />
+        </div>
+        <div>
+            <label asp-for="ConfirmPassword">Confirm password</label><br />
+            <input asp-for="ConfirmPassword" />
+            <span asp-validation-for="ConfirmPassword" />
+        </div>
+        <div>
+            <input type="submit" value="Register" />
+        </div>
+    </div>
+</form>
