@@ -9,6 +9,7 @@ using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 using QoolloTaskViewer.Models;
+using System.IO;
 
 namespace QoolloTaskViewer.ApiServices.Gitlab
 {
@@ -42,15 +43,24 @@ namespace QoolloTaskViewer.ApiServices.Gitlab
         public async Task<List<IssueDto>> GetAllIssuesAsync()
         {
             string query = "/issues?scope=assigned_to_me";
-            var stringTask = await Client.GetStreamAsync(baseAddress + query);
+            Stream streamTask;
+            try
+            {
+                streamTask = await Client.GetStreamAsync(baseAddress + query);
+            }
+            catch (HttpRequestException)
+            {
+                throw;
+            }
+
             List<GitlabIssueDto> rawIssues;
             try
             {
-                rawIssues = await JsonSerializer.DeserializeAsync<List<GitlabIssueDto>>(stringTask);
+                rawIssues = await JsonSerializer.DeserializeAsync<List<GitlabIssueDto>>(streamTask);
             }
             catch (JsonException)
             {
-                return null;
+                throw;
             }
 
             return MapIssues(rawIssues);
@@ -62,11 +72,11 @@ namespace QoolloTaskViewer.ApiServices.Gitlab
 
             foreach (var rawIssue in rawIssues)
             {
+                DateTime? dueDateResult = null;
                 DateTime dueDate;
-                
-                if (!DateTime.TryParse(rawIssue.due_date, out dueDate))
+                if (DateTime.TryParse(rawIssue.due_date, out dueDate))
                 {
-                    dueDate = default;
+                    dueDateResult = dueDate;
                 }
 
                 LabelFinder labelFinder = new LabelFinder(rawIssue.labels);
@@ -78,7 +88,7 @@ namespace QoolloTaskViewer.ApiServices.Gitlab
                     Name = rawIssue.title,
                     State = issueState,
                     Description = rawIssue.description,
-                    DueDate = dueDate,
+                    DueDate = dueDateResult,
                     Difficulty = labelFinder.GetDifficulty(),
                     Priority = labelFinder.GetPriority(),
                     Labels = rawIssue.labels,

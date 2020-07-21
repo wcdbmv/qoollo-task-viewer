@@ -9,6 +9,7 @@ using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 using QoolloTaskViewer.Models;
+using System.IO;
 
 namespace QoolloTaskViewer.ApiServices.Jira
 {
@@ -45,15 +46,24 @@ namespace QoolloTaskViewer.ApiServices.Jira
         public async Task<List<IssueDto>> GetAllIssuesAsync()
         {
             string query = "/rest/api/2/search?jql=assignee=currentuser()";
-            var stringTask = await Client.GetStreamAsync(baseAddress + query);
+            Stream streamTask;
+            try
+            {
+                streamTask = await Client.GetStreamAsync(baseAddress + query);
+            }
+            catch (HttpRequestException)
+            {
+                throw;
+            }
+
             JiraResponseDto response;
             try
             {
-                response = await JsonSerializer.DeserializeAsync<JiraResponseDto>(stringTask);
+                response = await JsonSerializer.DeserializeAsync<JiraResponseDto>(streamTask);
             }
             catch (JsonException)
             {
-                return null;
+                throw;
             }
 
             return MapIssues(response.issues);
@@ -66,11 +76,12 @@ namespace QoolloTaskViewer.ApiServices.Jira
             {
                 foreach (var rawIssue in rawIssues)
                 {
+                    DateTime? dueDateResult = null;
                     DateTime dueDate;
 
-                    if (!DateTime.TryParse(rawIssue.fields.duedate, out dueDate))
+                    if (DateTime.TryParse(rawIssue.fields.duedate, out dueDate))
                     {
-                        dueDate = default;                            
+                        dueDateResult = dueDate;                            
                     }
 
                     LabelFinder labelFinder = new LabelFinder(rawIssue.fields.labels);
@@ -80,7 +91,7 @@ namespace QoolloTaskViewer.ApiServices.Jira
                         Name = rawIssue.fields.summary,
                         State = MapState(rawIssue.fields.status.statusCategory.key),
                         Description = rawIssue.fields.description,
-                        DueDate = dueDate,
+                        DueDate = dueDateResult,
                         Difficulty = labelFinder.GetDifficulty(),
                         Priority = MapPriority(rawIssue.fields.priority.name),
                         Labels = rawIssue.fields.labels,

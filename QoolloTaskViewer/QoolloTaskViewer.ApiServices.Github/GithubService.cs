@@ -9,6 +9,7 @@ using QoolloTaskViewer.ApiServices.Github.Dtos;
 using QoolloTaskViewer.ApiServices.Dtos;
 using QoolloTaskViewer.ApiServices.Enums;
 using QoolloTaskViewer.Models;
+using System.IO;
 
 namespace QoolloTaskViewer.ApiServices.Github
 {
@@ -42,15 +43,24 @@ namespace QoolloTaskViewer.ApiServices.Github
         public async Task<List<IssueDto>> GetAllIssuesAsync()
         {
             string query = "/issues?scope=assigned_to_me";
-            var stringTask = await Client.GetStreamAsync(baseAddress + query);
+            Stream streamTask;
+            try
+            {
+                streamTask = await Client.GetStreamAsync(baseAddress + query);
+            }
+            catch (HttpRequestException)
+            {
+                throw;
+            }
+
             List<GithubIssueDto> rawIssues;
             try
             {
-                rawIssues = await JsonSerializer.DeserializeAsync<List<GithubIssueDto>>(stringTask);
+                rawIssues = await JsonSerializer.DeserializeAsync<List<GithubIssueDto>>(streamTask);
             }
             catch (JsonException)
             {
-                return null;
+                throw;
             }
 
             return MapIssues(rawIssues);
@@ -62,7 +72,14 @@ namespace QoolloTaskViewer.ApiServices.Github
 
             foreach (var rawIssue in rawIssues)
             {
+                DateTime? dueDateResult = null;
                 DateTime dueDate;
+                
+                if (rawIssue.milestone != null)
+                {
+                    if (DateTime.TryParse(rawIssue.milestone.due_on, out dueDate))
+                        dueDateResult = dueDate;
+                }
 
                 List<string> labels = new List<string>();
 
@@ -73,10 +90,7 @@ namespace QoolloTaskViewer.ApiServices.Github
 
                 LabelFinder labelFinder = new LabelFinder(labels);
 
-                if (rawIssue.milestone == null || !DateTime.TryParse(rawIssue.milestone.due_on, out dueDate))
-                {
-                    dueDate = default;
-                }
+
 
                 State issueState = rawIssue.state == "closed" ? State.Closed : labelFinder.GetState();
                 
@@ -85,7 +99,7 @@ namespace QoolloTaskViewer.ApiServices.Github
                     Name = rawIssue.title,
                     State = issueState,
                     Description = rawIssue.body,
-                    DueDate = dueDate,
+                    DueDate = dueDateResult,
                     Difficulty = labelFinder.GetDifficulty(),
                     Priority = labelFinder.GetPriority(),
                     Labels = labels,
