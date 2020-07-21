@@ -10,7 +10,7 @@ namespace QoolloTaskViewer.ApiServices.Dtos
         public string Name { get; set; }
         public State State { get; set; }
         public string Description { get; set; }
-        public DateTime DueDate { get; set; }
+        public DateTime? DueDate { get; set; }
         public Difficulty Difficulty { get; set; }
         public Priority Priority { get; set; }
         public List<string> Labels { get; set; }
