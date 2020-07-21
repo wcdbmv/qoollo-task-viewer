@@ -62,7 +62,12 @@ namespace QoolloTaskViewer.ApiServices.Gitlab
 
             foreach (var rawIssue in rawIssues)
             {
-                DateTime dueDate = rawIssue.due_date == null ? default : DateTime.Parse(rawIssue.due_date);
+                DateTime dueDate;
+                
+                if (!DateTime.TryParse(rawIssue.due_date, out dueDate))
+                {
+                    dueDate = default;
+                }
 
                 LabelFinder labelFinder = new LabelFinder(rawIssue.labels);
 
@@ -73,10 +78,10 @@ namespace QoolloTaskViewer.ApiServices.Gitlab
                     Name = rawIssue.title,
                     State = issueState,
                     Description = rawIssue.description,
-                    Labels = rawIssue.labels,
+                    DueDate = dueDate,
                     Difficulty = labelFinder.GetDifficulty(),
                     Priority = labelFinder.GetPriority(),
-                    DueDate = dueDate,
+                    Labels = rawIssue.labels,
                     ServiceInfo = new ServiceInfoDto
                     {
                         ServiceType = ServiceType.GitLab

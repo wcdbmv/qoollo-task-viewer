@@ -46,18 +46,17 @@ namespace QoolloTaskViewer.ApiServices.Jira
         {
             string query = "/rest/api/2/search?jql=assignee=currentuser()";
             var stringTask = await Client.GetStreamAsync(baseAddress + query);
-            JiraResponceDto responce;
+            JiraResponseDto response;
             try
             {
-                responce = await JsonSerializer.DeserializeAsync<JiraResponceDto>(stringTask);
+                response = await JsonSerializer.DeserializeAsync<JiraResponseDto>(stringTask);
             }
             catch (JsonException)
             {
-                Console.WriteLine("S");
                 return null;
             }
 
-            return MapIssues(responce.issues);
+            return MapIssues(response.issues);
         }
 
         List<IssueDto> MapIssues(List<JiraIssueDto> rawIssues)
@@ -67,18 +66,23 @@ namespace QoolloTaskViewer.ApiServices.Jira
             {
                 foreach (var rawIssue in rawIssues)
                 {
-                    DateTime dueDate = rawIssue.fields.duedate == null ? default : DateTime.Parse(rawIssue.fields.duedate);
+                    DateTime dueDate;
+
+                    if (!DateTime.TryParse(rawIssue.fields.duedate, out dueDate))
+                    {
+                        dueDate = default;                            
+                    }
 
                     LabelFinder labelFinder = new LabelFinder(rawIssue.fields.labels);
 
                     IssueDto issue = new IssueDto
                     {
                         Name = rawIssue.fields.summary,
-                        State = GetState(rawIssue.fields.status.statusCategory.key),
+                        State = MapState(rawIssue.fields.status.statusCategory.key),
                         Description = rawIssue.fields.description,
                         DueDate = dueDate,
                         Difficulty = labelFinder.GetDifficulty(),
-                        Priority = GetPriority(rawIssue.fields.priority.name),
+                        Priority = MapPriority(rawIssue.fields.priority.name),
                         Labels = rawIssue.fields.labels,
                         ServiceInfo = new ServiceInfoDto
                         {
@@ -94,7 +98,7 @@ namespace QoolloTaskViewer.ApiServices.Jira
             return issues;
         }
 
-        Priority GetPriority(string name)
+        Priority MapPriority(string name)
         {
             Priority priority = Priority.Unrecognized;
 
@@ -114,7 +118,7 @@ namespace QoolloTaskViewer.ApiServices.Jira
             return priority;
         }
 
-        State GetState(string key)
+        State MapState(string key)
         {
             State state = State.Unrecognized;
 
