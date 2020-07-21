@@ -5,7 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\QoolloTaskViewer\QoolloTaskViewer.csproj" />
+    <ProjectReference Include="..\QoolloTaskViewer.ApiServices\QoolloTaskViewer.ApiServices.csproj" />
   </ItemGroup>
 
 </Project>

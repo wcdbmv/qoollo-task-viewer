@@ -8,7 +8,7 @@ using QoolloTaskViewer.ApiServices.Enums;
 
 namespace QoolloTaskViewer.ApiServices
 {
-    public class GitLabelFinder
+    public class LabelFinder
     {
         private readonly List<string> _labels;
 
@@ -43,7 +43,7 @@ namespace QoolloTaskViewer.ApiServices
         private readonly Regex doingStateExpression;
         private readonly Regex reviewStateExpression;
 
-        public GitLabelFinder(List<string> labels)
+        public LabelFinder(List<string> labels)
         {
             _labels = labels;
 
