@@ -1,6 +1,12 @@
-﻿@{
+﻿@model Issues
+@{
     ViewData["Title"] = "Board";
     ViewBag.Current = "Board";
+
+    var ToDoIssuesCount = Model.ToDoIssues.Count();
+    var DoingIssuesCount = Model.DoingIssues.Count();
+    var ReviewIssuesCount = Model.ReviewIssues.Count();
+    var UnrecognizedIssuesCount = Model.UnrecognizedIssues.Count();
 }
 
 <!-- Board header -->
@@ -12,138 +18,36 @@
 </div>
 
 <!-- Board -->
-<!-- Example of filling the board -->
 
 <div class="row">
     <div class="col-4">
         <div class="row">
             <h5 class="col-6">TO DO</h5>
-            <h5 class="task-counter col-6">4</h5>
+            <h5 class="task-counter col-6">@ToDoIssuesCount</h5>
         </div>
-        <div class="task">
-            <p class="task-title-lim">Разработать макет веб-приложения</p>
-            <span class="label float-l">
-                GitLab
-            </span>
-            <span class="label float-l">
-                <img src="~/img/priority_icon.svg" class="filter-red" />
-            </span>
-            <span class="label float-l">
-                <img src="~/img/time_icon.svg" />
-                6
-            </span>
-            <span class="label float-l">
-                <img src="~/img/due_date_icon.svg" />
-                Jul, 12
-            </span>
-            <a href="#">
-                <span class="label float-r">
-                    <img src="~/img/detail_icon.svg" />
-                </span>
-            </a>
-        </div>
-        <div class="task">
-            <p class="task-title-lim">Разработать макет приложения</p>
-            <span class="label float-l">
-                GitHub
-            </span>
-            <span class="label float-l">
-                <img src="~/img/priority_icon.svg" class="filter-green" />
-            </span>
-            <span class="label float-l">
-                <img src="~/img/time_icon.svg" />
-                1
-            </span>
-            <span class="label float-l">
-                <img src="~/img/due_date_icon.svg" />
-                Jul, 29
-            </span>
-            <a href="#">
-                <span class="label float-r">
-                    <img src="~/img/detail_icon.svg" />
-                </span>
-            </a>
-        </div>
-        <div class="task">
-            <p class="task-title-lim">Построить схему</p>
-            <span class="label float-l">
-                Jira
-            </span>
-            <span class="label float-l">
-                <img src="~/img/priority_icon.svg" class="filter-yellow" />
-            </span>
-            <span class="label float-l">
-                <img src="~/img/time_icon.svg" />
-                9
-            </span>
-            <span class="label float-l">
-                <img src="~/img/due_date_icon.svg" />
-                Jul, 11
-            </span>
-            <a href="#">
-                <span class="label float-r">
-                    <img src="~/img/detail_icon.svg" />
-                </span>
-            </a>
-        </div>
-        <div class="task">
-            <p class="task-title-lim">Создать файл с описанием основной идеи и функциональности</p>
-            <span class="label float-l">
-                GitLab
-            </span>
-            <span class="label float-l">
-                <img src="~/img/priority_icon.svg" />
-            </span>
-            <span class="label float-l">
-                <img src="~/img/time_icon.svg" />
-                3
-            </span>
-            <span class="label float-l">
-                <img src="~/img/due_date_icon.svg" />
-                Jul, 18
-            </span>
-            <a href="#">
-                <span class="label float-r">
-                    <img src="~/img/detail_icon.svg" />
-                </span>
-            </a>
-        </div>
+        @{
+            await Html.RenderPartialAsync("_Task", Model.ToDoIssues);
+        }
     </div>
 
     <div class="col-4">
         <div class="row">
             <h5 class="col-6">DOING</h5>
-            <h5 class="task-counter col-6">0</h5>
+            <h5 class="task-counter col-6">@DoingIssuesCount</h5>
         </div>
+        @{
+            await Html.RenderPartialAsync("_Task", Model.DoingIssues);
+        }
     </div>
 
     <div class="col-4">
         <div class="row">
-            <h5 class="col-6">COMPLETED</h5>
-            <h5 class="task-counter col-6">1</h5>
+            <h5 class="col-6">REVIEW</h5>
+            <h5 class="task-counter col-6">@ReviewIssuesCount</h5>
         </div>
-        <div class="task">
-            <p class="task-title-lim">Выбрать проект для практики</p>
-            <span class="label float-l">
-                Jira
-            </span>
-            <span class="label float-l">
-                <img src="~/img/priority_icon.svg" class="filter-yellow" />
-            </span>
-            <span class="label float-l">
-                <img src="~/img/time_icon.svg" />
-                2
-            </span>
-            <span class="label float-l">
-                <img src="~/img/due_date_icon.svg" />
-                Jul, 7
-            </span>
-            <a href="#">
-                <span class="label float-r">
-                    <img src="~/img/detail_icon.svg" />
-                </span>
-            </a>
-        </div>
+        @{
+            await Html.RenderPartialAsync("_Task", Model.ReviewIssues);
+        }
     </div>
 </div>
 
@@ -156,22 +60,24 @@
                 <h5 class="modal-title" id="unrecognizedModalLabel">Unrecognized tasks</h5>
             </div>
             <div class="modal-body">
-                <div class="task unrecognized-task">
-                    <p class="task-title-lim">Сделать курсовую по операционным системам</p>
-                    <a href="#">
-                        <span class="label float-r">
-                            <img src="~/img/detail_icon.svg" />
-                        </span>
-                    </a>
-                </div>
-                <div class="task unrecognized-task">
-                    <p class="task-title-lim">Посмотреть смешные видосы</p>
-                    <a href="#">
-                        <span class="label float-r">
-                            <img src="~/img/detail_icon.svg" />
-                        </span>
-                    </a>
-                </div>
+                @if (@UnrecognizedIssuesCount == 0)
+                {
+                    <p>No unrecognized tasks</p>
+                }
+                else
+                {
+                    @foreach (var issue in Model.UnrecognizedIssues)
+                    {
+                        <div class="task unrecognized-task">
+                            <p class="task-title-lim">@issue.Name</p>
+                            <a target="_blank" rel="noopener noreferrer" href="@issue.Url">
+                                <span class="label float-r">
+                                    <img src="~/img/icon/detail_icon.svg" />
+                                </span>
+                            </a>
+                        </div>
+                    }
+                }
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn" data-dismiss="modal">Close</button>

@@ -1,0 +1,58 @@
+﻿@using System.Globalization
+@model List<QoolloTaskViewer.ApiServices.Dtos.IssueDto>
+@{
+}
+
+@foreach (var issue in Model)
+{
+    <div class="task">
+        <p class="task-title-lim">@issue.Name</p>
+        <span class="label float-l">
+            @issue.ServiceInfo.ServiceType
+        </span>
+        <span class="label float-l">
+            @switch (issue.Priority)
+            {
+                case QoolloTaskViewer.ApiServices.Enums.Priority.High:
+                    <img src="~/img/icon/high_priority_icon.svg" />
+                    break;
+                case QoolloTaskViewer.ApiServices.Enums.Priority.Medium:
+                    <img src="~/img/icon/medium_priority_icon.svg" />
+                    break;
+                case QoolloTaskViewer.ApiServices.Enums.Priority.Low:
+                    <img src="~/img/icon/low_priority_icon.svg" />
+                    break;
+                default:
+                    <img src="~/img/icon/priority_icon.svg" />
+                    break;
+            }
+        </span>
+        <span class="label float-l">
+            <img src="~/img/icon/time_icon.svg" />
+            @switch (issue.Difficulty)
+            {
+                case QoolloTaskViewer.ApiServices.Enums.Difficulty.Hard:
+                    <span>3</span>
+                    break;
+                case QoolloTaskViewer.ApiServices.Enums.Difficulty.Medium:
+                    <span>2</span>
+                    break;
+                case QoolloTaskViewer.ApiServices.Enums.Difficulty.Easy:
+                    <span>1</span>
+                    break;
+                default:
+                    <span>?</span>
+                    break;
+            }
+        </span>
+        <span class="label float-l">
+            <img src="~/img/icon/due_date_icon.svg" />
+            @issue.DueDate.ToString("MMM, dd", DateTimeFormatInfo.InvariantInfo)
+        </span>
+        <a target="_blank" rel="noopener noreferrer" href="@issue.Url">
+            <span class="label float-r">
+                <img src="~/img/icon/detail_icon.svg" />
+            </span>
+        </a>
+    </div>
+}

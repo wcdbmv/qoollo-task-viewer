@@ -200,22 +200,3 @@ h5 {
     margin-top: 18px;
     margin-bottom: 19px;
 }
-
-
-/* Text */
-
-
-
-/* Filter */
-
-.filter-red {
-    filter: invert(62%) sepia(84%) saturate(4508%) hue-rotate(327deg) brightness(96%) contrast(91%);
-}
-
-.filter-yellow {
-    filter: invert(67%) sepia(58%) saturate(641%) hue-rotate(331deg) brightness(98%) contrast(93%);
-}
-
-.filter-green {
-    filter: invert(48%) sepia(41%) saturate(705%) hue-rotate(93deg) brightness(91%) contrast(96%);
-}
