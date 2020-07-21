@@ -1,7 +1,7 @@
-﻿using System;
+﻿using QoolloTaskViewer.ApiServices.Enums;
+using System;
 using System.Collections.Generic;
 using System.Text;
-using QoolloTaskViewer.Models;
 
 namespace QoolloTaskViewer.ApiServices.Dtos
 {    
