@@ -10,7 +10,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
 </head>
 <body class="min-100">
-  <div class="bg-mineral-green-light nav-bg"></div> <!-- Hmm, not too elegant -->
+  <div class="bg-mineral-green-light nav-bg"></div>
   <div class="bg-mineral-green logo-bg"></div>
 
   <div class="container min-100 d-flex flex-column">
@@ -25,7 +25,7 @@
         <h1>@ViewData["Title"]</h1>
       </div>
       <div class="col-3">
-        <!-- TODO: Userpic and username -->
+        <!-- TODO: Username -->
       </div>
     </header>
 
@@ -48,11 +48,12 @@
         </a>
       </nav>
 
-      <!-- Board -->
+      <!-- Content -->
 
       <div class="col-9">
         @RenderBody()
       </div>
+
     </div>
   </div>
 
@@ -68,8 +69,8 @@
           Are you sure you want to sign out?
         </div>
         <div class="modal-footer">
+          <button type="button" class="btn-second">Yes</button>
           <button type="button" class="btn" data-dismiss="modal">No</button>
-          <button type="button" class="btn">Yes</button>
         </div>
       </div>
     </div>

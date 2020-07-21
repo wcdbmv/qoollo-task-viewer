@@ -11,10 +11,13 @@
 
 <!-- Board header -->
 
-<div class="row">
-  <button type="button" class="btn unrecognized-btn d-block mr-0 ml-auto" data-toggle="modal" data-target="#unrecognizedModal">
-    Unrecognized
-  </button>
+<div class="board-header">
+  @if (UnrecognizedIssuesCount != 0)
+  {
+    <button type="button" class="btn-second" data-toggle="modal" data-target="#unrecognizedModal">
+      Unrecognized
+    </button>
+  }
 </div>
 
 <!-- Board -->
@@ -26,7 +29,7 @@
       <h5 class="task-counter col-6">@ToDoIssuesCount</h5>
     </div>
     @{
-        await Html.RenderPartialAsync("_Task", Model.ToDoIssues);
+      await Html.RenderPartialAsync("_Task", Model.ToDoIssues);
     }
   </div>
 
@@ -36,7 +39,7 @@
       <h5 class="task-counter col-6">@DoingIssuesCount</h5>
     </div>
     @{
-        await Html.RenderPartialAsync("_Task", Model.DoingIssues);
+      await Html.RenderPartialAsync("_Task", Model.DoingIssues);
     }
   </div>
 
@@ -46,7 +49,7 @@
       <h5 class="task-counter col-6">@ReviewIssuesCount</h5>
     </div>
     @{
-        await Html.RenderPartialAsync("_Task", Model.ReviewIssues);
+      await Html.RenderPartialAsync("_Task", Model.ReviewIssues);
     }
   </div>
 </div>
@@ -60,27 +63,20 @@
         <h5 class="modal-title" id="unrecognizedModalLabel">Unrecognized tasks</h5>
       </div>
       <div class="modal-body">
-        @if (@UnrecognizedIssuesCount == 0)
+        @foreach (var issue in Model.UnrecognizedIssues)
         {
-            <p>No unrecognized tasks</p>
-        }
-        else
-        {
-            @foreach (var issue in Model.UnrecognizedIssues)
-            {
-              <div class="task unrecognized-task">
-                <p class="task-title-lim">@issue.Name</p>
-                <a target="_blank" rel="noopener noreferrer" href="@issue.Url">
-                  <span class="label float-r">
-                    <img src="~/img/icon/detail_icon.svg" />
-                  </span>
-                </a>
-              </div>
-            }
+          <div class="task unrecognized-task">
+            <p class="task-title-lim">@issue.Name</p>
+            <a target="_blank" rel="noopener noreferrer" href="@issue.Url">
+              <span class="label float-r">
+                <img src="~/img/icon/detail_icon.svg" />
+              </span>
+            </a>
+          </div>
         }
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn" data-dismiss="modal">Close</button>
+        <button type="button" class="btn-second" data-dismiss="modal">Close</button>
       </div>
     </div>
   </div>
