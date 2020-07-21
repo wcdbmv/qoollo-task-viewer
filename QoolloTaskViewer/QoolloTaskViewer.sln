@@ -3,7 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30225.117
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QoolloTaskViewer", "QoolloTaskViewer\QoolloTaskViewer.csproj", "{7105ACAE-D22D-47CC-B1C2-4B8E0DA7A286}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "QoolloTaskViewer", "QoolloTaskViewer\QoolloTaskViewer.csproj", "{7105ACAE-D22D-47CC-B1C2-4B8E0DA7A286}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "QoolloTaskViewer.ApiServices", "QoolloTaskViewer.ApiServices\QoolloTaskViewer.ApiServices.csproj", "{3489687B-C7DB-46EE-806B-D89E062271C0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{7105ACAE-D22D-47CC-B1C2-4B8E0DA7A286}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7105ACAE-D22D-47CC-B1C2-4B8E0DA7A286}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7105ACAE-D22D-47CC-B1C2-4B8E0DA7A286}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3489687B-C7DB-46EE-806B-D89E062271C0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3489687B-C7DB-46EE-806B-D89E062271C0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3489687B-C7DB-46EE-806B-D89E062271C0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3489687B-C7DB-46EE-806B-D89E062271C0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
