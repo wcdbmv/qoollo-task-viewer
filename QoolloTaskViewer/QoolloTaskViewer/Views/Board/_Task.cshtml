@@ -47,7 +47,14 @@
     </span>
     <span class="label float-l">
       <img src="~/img/icon/due_date_icon.svg" />
-      @issue.DueDate.ToString("MMM, dd", DateTimeFormatInfo.InvariantInfo)
+      @if (issue.DueDate != null)
+      {
+        @issue.DueDate.ToString("MMM, dd", DateTimeFormatInfo.InvariantInfo)
+      }
+      else
+      {
+        <span>?</span>
+      }
     </span>
     <a target="_blank" rel="noopener noreferrer" href="@issue.Url">
       <span class="label float-r">
