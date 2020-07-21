@@ -1,7 +1,5 @@
 ﻿@using System.Globalization
 @model List<QoolloTaskViewer.ApiServices.Dtos.IssueDto>
-@{
-}
 
 @foreach (var issue in Model)
 {
@@ -49,7 +47,7 @@
       <img src="~/img/icon/due_date_icon.svg" />
       @if (issue.DueDate != null)
       {
-        @issue.DueDate.ToString("MMM, dd", DateTimeFormatInfo.InvariantInfo)
+        @issue.DueDate.Value.ToString("MMM, dd", DateTimeFormatInfo.InvariantInfo)
       }
       else
       {

@@ -26,9 +26,9 @@ namespace QoolloTaskViewer.Controllers
         {
             List<ServiceInfoDto> services = new List<ServiceInfoDto>
             {
-                new ServiceInfoDto { ServiceType = ApiServices.Enums.ServiceType.Gitlab },
-                new ServiceInfoDto { ServiceType = ApiServices.Enums.ServiceType.Github },
-                new ServiceInfoDto { ServiceType = ApiServices.Enums.ServiceType.Jira },
+                new ServiceInfoDto { ServiceType = ServiceType.GitLab },
+                new ServiceInfoDto { ServiceType = ServiceType.GitHub },
+                new ServiceInfoDto { ServiceType = ServiceType.Jira },
             };
 
             List<IssueDto> testIssues = new List<IssueDto>
