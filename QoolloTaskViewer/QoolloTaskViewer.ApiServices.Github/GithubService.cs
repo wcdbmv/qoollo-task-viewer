@@ -10,6 +10,7 @@ using QoolloTaskViewer.ApiServices.Dtos;
 using QoolloTaskViewer.ApiServices.Enums;
 using QoolloTaskViewer.Models;
 using System.IO;
+using QoolloTaskViewer.ApiServices.Github.Exceptions;
 
 namespace QoolloTaskViewer.ApiServices.Github
 {
@@ -50,7 +51,7 @@ namespace QoolloTaskViewer.ApiServices.Github
             }
             catch (HttpRequestException)
             {
-                throw;
+                throw new GithubServiceException();
             }
 
             List<GithubIssueDto> rawIssues;
@@ -60,7 +61,7 @@ namespace QoolloTaskViewer.ApiServices.Github
             }
             catch (JsonException)
             {
-                throw;
+                throw new GithubServiceException();
             }
 
             return MapIssues(rawIssues);

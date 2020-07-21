@@ -10,6 +10,7 @@ using System.Text.Json;
 using System.Threading.Tasks;
 using QoolloTaskViewer.Models;
 using System.IO;
+using QoolloTaskViewer.ApiServices.Jira.Exceptions;
 
 namespace QoolloTaskViewer.ApiServices.Jira
 {
@@ -53,7 +54,7 @@ namespace QoolloTaskViewer.ApiServices.Jira
             }
             catch (HttpRequestException)
             {
-                throw;
+                throw new JiraServiceException();
             }
 
             JiraResponseDto response;
@@ -63,7 +64,7 @@ namespace QoolloTaskViewer.ApiServices.Jira
             }
             catch (JsonException)
             {
-                throw;
+                throw new JiraServiceException();
             }
 
             return MapIssues(response.issues);

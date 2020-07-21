@@ -10,6 +10,7 @@ using System.Text.Json;
 using System.Threading.Tasks;
 using QoolloTaskViewer.Models;
 using System.IO;
+using QoolloTaskViewer.ApiServices.Gitlab.Exceptions;
 
 namespace QoolloTaskViewer.ApiServices.Gitlab
 {
@@ -50,7 +51,7 @@ namespace QoolloTaskViewer.ApiServices.Gitlab
             }
             catch (HttpRequestException)
             {
-                throw;
+                throw new GitlabServiceException();
             }
 
             List<GitlabIssueDto> rawIssues;
@@ -60,7 +61,7 @@ namespace QoolloTaskViewer.ApiServices.Gitlab
             }
             catch (JsonException)
             {
-                throw;
+                throw new GitlabServiceException();
             }
 
             return MapIssues(rawIssues);
