@@ -1,87 +1,87 @@
 ﻿@model Issues
 @{
-    ViewData["Title"] = "Board";
-    ViewBag.Current = "Board";
+  ViewData["Title"] = "Board";
+  ViewBag.Current = "Board";
 
-    var ToDoIssuesCount = Model.ToDoIssues.Count();
-    var DoingIssuesCount = Model.DoingIssues.Count();
-    var ReviewIssuesCount = Model.ReviewIssues.Count();
-    var UnrecognizedIssuesCount = Model.UnrecognizedIssues.Count();
+  var ToDoIssuesCount = Model.ToDoIssues.Count();
+  var DoingIssuesCount = Model.DoingIssues.Count();
+  var ReviewIssuesCount = Model.ReviewIssues.Count();
+  var UnrecognizedIssuesCount = Model.UnrecognizedIssues.Count();
 }
 
 <!-- Board header -->
 
 <div class="row">
-    <button type="button" class="btn unrecognized-btn d-block mr-0 ml-auto" data-toggle="modal" data-target="#unrecognizedModal">
-        Unrecognized
-    </button>
+  <button type="button" class="btn unrecognized-btn d-block mr-0 ml-auto" data-toggle="modal" data-target="#unrecognizedModal">
+    Unrecognized
+  </button>
 </div>
 
 <!-- Board -->
 
 <div class="row">
-    <div class="col-4">
-        <div class="row">
-            <h5 class="col-6">TO DO</h5>
-            <h5 class="task-counter col-6">@ToDoIssuesCount</h5>
-        </div>
-        @{
-            await Html.RenderPartialAsync("_Task", Model.ToDoIssues);
-        }
+  <div class="col-4">
+    <div class="row">
+      <h5 class="col-6">TO DO</h5>
+      <h5 class="task-counter col-6">@ToDoIssuesCount</h5>
     </div>
+    @{
+        await Html.RenderPartialAsync("_Task", Model.ToDoIssues);
+    }
+  </div>
 
-    <div class="col-4">
-        <div class="row">
-            <h5 class="col-6">DOING</h5>
-            <h5 class="task-counter col-6">@DoingIssuesCount</h5>
-        </div>
-        @{
-            await Html.RenderPartialAsync("_Task", Model.DoingIssues);
-        }
+  <div class="col-4">
+    <div class="row">
+      <h5 class="col-6">DOING</h5>
+      <h5 class="task-counter col-6">@DoingIssuesCount</h5>
     </div>
+    @{
+        await Html.RenderPartialAsync("_Task", Model.DoingIssues);
+    }
+  </div>
 
-    <div class="col-4">
-        <div class="row">
-            <h5 class="col-6">REVIEW</h5>
-            <h5 class="task-counter col-6">@ReviewIssuesCount</h5>
-        </div>
-        @{
-            await Html.RenderPartialAsync("_Task", Model.ReviewIssues);
-        }
+  <div class="col-4">
+    <div class="row">
+      <h5 class="col-6">REVIEW</h5>
+      <h5 class="task-counter col-6">@ReviewIssuesCount</h5>
     </div>
+    @{
+        await Html.RenderPartialAsync("_Task", Model.ReviewIssues);
+    }
+  </div>
 </div>
 
 <!-- List of unrecognized tasks -->
 
 <div class="modal fade" id="unrecognizedModal" tabindex="-1" role="dialog" aria-labelledby="unrecognizedModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="unrecognizedModalLabel">Unrecognized tasks</h5>
-            </div>
-            <div class="modal-body">
-                @if (@UnrecognizedIssuesCount == 0)
-                {
-                    <p>No unrecognized tasks</p>
-                }
-                else
-                {
-                    @foreach (var issue in Model.UnrecognizedIssues)
-                    {
-                        <div class="task unrecognized-task">
-                            <p class="task-title-lim">@issue.Name</p>
-                            <a target="_blank" rel="noopener noreferrer" href="@issue.Url">
-                                <span class="label float-r">
-                                    <img src="~/img/icon/detail_icon.svg" />
-                                </span>
-                            </a>
-                        </div>
-                    }
-                }
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn" data-dismiss="modal">Close</button>
-            </div>
-        </div>
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="unrecognizedModalLabel">Unrecognized tasks</h5>
+      </div>
+      <div class="modal-body">
+        @if (@UnrecognizedIssuesCount == 0)
+        {
+            <p>No unrecognized tasks</p>
+        }
+        else
+        {
+            @foreach (var issue in Model.UnrecognizedIssues)
+            {
+              <div class="task unrecognized-task">
+                <p class="task-title-lim">@issue.Name</p>
+                <a target="_blank" rel="noopener noreferrer" href="@issue.Url">
+                  <span class="label float-r">
+                    <img src="~/img/icon/detail_icon.svg" />
+                  </span>
+                </a>
+              </div>
+            }
+        }
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn" data-dismiss="modal">Close</button>
+      </div>
     </div>
+  </div>
 </div>
