@@ -15,7 +15,6 @@ namespace QoolloTaskViewer.Db.Configuration
             builder.HasOne(t => t.User).WithMany(u => u.Tokens).HasForeignKey(t => t.UserId);
             builder.HasOne(t => t.Service).WithMany(s => s.Tokens).HasForeignKey(t => t.ServiceId);
 
-            builder.Property(t => t.InServiceUsername).IsRequired();
             builder.Property(t => t.InServiceUsername).HasMaxLength(255);
 
             builder.Property(t => t.Token).IsRequired();

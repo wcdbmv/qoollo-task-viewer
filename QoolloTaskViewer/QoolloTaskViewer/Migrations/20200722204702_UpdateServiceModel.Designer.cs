@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using QoolloTaskViewer.Db;
@@ -9,9 +10,10 @@ using QoolloTaskViewer.Db;
 namespace QoolloTaskViewer.Migrations
 {
     [DbContext(typeof(QoolloTaskViewerContext))]
-    partial class QoolloTaskViewerContextModelSnapshot : ModelSnapshot
+    [Migration("20200722204702_UpdateServiceModel")]
+    partial class UpdateServiceModel
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

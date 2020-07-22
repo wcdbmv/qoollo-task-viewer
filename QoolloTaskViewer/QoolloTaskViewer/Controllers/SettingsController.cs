@@ -51,7 +51,9 @@ namespace QoolloTaskViewer.Controllers
                     case ServiceType.GitLab:
                         break;
                     case ServiceType.GitHub:
-                        ServiceModel service = await _servicesRepository.FindServiceByIdAsync(Guid.Parse("bb286f8a-27bb-4fc5-a3d3-ad3f6ea64698"));
+                        // DomainModel domain = await _domainsRepository.FindDomainByNameAsync("github.com");
+                        // ServiceModel service = await _servicesRepository.FindServiceByDomainIdAsync(domain.Id);
+                        ServiceModel service = await _servicesRepository.FindServiceByDomainAsync("github.com");
                         UserModel user = await _usersRepository.FindUserByNameAsync(model.TokenToAdd.UserName);
                         TokenModel token = new TokenModel()
                         {

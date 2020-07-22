@@ -78,6 +78,8 @@ namespace QoolloTaskViewer
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
             });
+
+            InitializeDatabase(app).Wait();
         }
 
         private async Task InitializeDatabase(IApplicationBuilder app)
