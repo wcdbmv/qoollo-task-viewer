@@ -9,13 +9,14 @@
 
 html,
 body {
-  height: 100%;
+  position: relative;
   font-family: 'Roboto', Arial, sans-serif;
   background-color: var(--mystic);
 }
 
 .min-100 {
   min-height: 100vh;
+  height: 100%;
 }
 
 .flex-fill {
@@ -43,6 +44,25 @@ body {
   float: left;
 }
 
+.right-delimiter {
+  border-right: 1px solid var(--tower-gray);
+}
+
+.page-content {
+  border-radius: 10px;
+  margin: 15px 0;
+  padding: 15px 40px;
+}
+
+.token-add {
+  overflow-y: auto;
+}
+
+.token-list {
+  height: 200px;
+  overflow-y: auto;
+}
+
 
 /* Background */
 
@@ -65,10 +85,28 @@ body {
 
 /* Navigation */
 
+.link {
+  color: var(--mineral-green-light);
+  font-weight: bold;
+}
+
+.link:hover {
+  color: var(--mineral-green);
+}
+
+.link-second {
+  color: var(--mineral-green-light);
+}
+
+.link-second:hover {
+  color: var(--mineral-green);
+}
+
 .nav {
   background-color: var(--mineral-green-light);
   padding: 30px 0 0 13px;
   border-radius: 0px 0px 30px 0px;
+  min-height: calc(100vh - 80px);
 }
 
 .nav-link {
@@ -104,9 +142,7 @@ body {
   height: 100%;
 }
 
-
 /* Logo */
-
 .logo {
   position: absolute;
   top: 50%;
@@ -138,6 +174,12 @@ h1 {
   top: 50%;
   transform: translate(0, -50%);
   margin-left: 10px;
+}
+
+h4 {
+  color: var(--mineral-green);
+  font-weight: bold;
+  font-size: 20px;
 }
 
 h5 {

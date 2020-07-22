@@ -8,7 +8,6 @@ using System.Net.Http.Headers;
 using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
-using QoolloTaskViewer.Models;
 using System.IO;
 using QoolloTaskViewer.ApiServices.Jira.Exceptions;
 
