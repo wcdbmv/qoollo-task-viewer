@@ -14,6 +14,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\QoolloTaskViewer.ApiServices.Github\QoolloTaskViewer.ApiServices.Github.csproj" />
+    <ProjectReference Include="..\QoolloTaskViewer.ApiServices.Gitlab\QoolloTaskViewer.ApiServices.Gitlab.csproj" />
+    <ProjectReference Include="..\QoolloTaskViewer.ApiServices.Jira\QoolloTaskViewer.ApiServices.Jira.csproj" />
     <ProjectReference Include="..\QoolloTaskViewer.ApiServices\QoolloTaskViewer.ApiServices.csproj" />
   </ItemGroup>
 
