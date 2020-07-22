@@ -140,14 +140,14 @@ namespace QoolloTaskViewer.Controllers
             await _tokensRepository.AddTokenAsync(token);
         }
 
-        [HttpDelete]
-        [Route("api/token/{id}")]
-        public async Task<HttpResponseMessage> DeleteToken(string id)
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteToken(SettingsViewModel model)
         {
-            var token = await _tokensRepository.FindTokenAsync(Guid.Parse(id));
+            var token = await _tokensRepository.FindTokenAsync(model.Token.Id);
             await _tokensRepository.RemoveTokenAsync(token);
 
-            return new HttpResponseMessage(HttpStatusCode.OK);
+            return RedirectToAction("Index", "Settings");
         }
     }
 }
