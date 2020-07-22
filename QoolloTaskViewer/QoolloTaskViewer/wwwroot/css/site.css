@@ -43,6 +43,14 @@ body {
   float: left;
 }
 
+.no-display {
+  display: none;
+}
+
+label {
+  margin: 12px 0 0 0;
+}
+
 
 /* Background */
 
