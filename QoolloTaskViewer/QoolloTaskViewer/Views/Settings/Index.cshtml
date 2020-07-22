@@ -20,9 +20,9 @@
     <form asp-action="AddToken" asp-controller="Settings" asp-anti-forgery="true">
       <div class="validation" asp-validation-summary="ModelOnly"></div>
       <div class="input-group input-group-sm mt-2 mb-3">
-        <input type="hidden" asp-for="TokenToAdd.Type" value="@ServiceType.GitHub" />
-        <input type="hidden" asp-for="TokenToAdd.Username" value="@User.Identity.Name" />
-        <input type="text" asp-for="TokenToAdd.Token" class="form-control w-75" placeholder="API token" />
+        <input type="hidden" asp-for="Token.Type" value="@ServiceType.GitHub" />
+        <input type="hidden" asp-for="Token.Username" value="@User.Identity.Name" />
+        <input type="text" asp-for="Token.Token" class="form-control w-75" placeholder="API token" />
       </div>
       <button class="btn-second" type="submit">Add</button>
     </form>
@@ -38,10 +38,10 @@
     <form asp-action="AddToken" asp-controller="Settings" asp-anti-forgery="true">
       <div class="validation" asp-validation-summary="ModelOnly"></div>
       <div class="input-group input-group-sm mt-2 mb-3">
-        <input type="hidden" asp-for="TokenToAdd.Type" value="@ServiceType.GitLab" />
-        <input type="hidden" asp-for="TokenToAdd.Username" value="@User.Identity.Name" />
-        <input type="text" asp-for="TokenToAdd.Domain" class="form-control w-25" placeholder="Domain" />
-        <input type="text" asp-for="TokenToAdd.Token" class="form-control w-75" placeholder="API token" />
+        <input type="hidden" asp-for="Token.Type" value="@ServiceType.GitLab" />
+        <input type="hidden" asp-for="Token.Username" value="@User.Identity.Name" />
+        <input type="text" asp-for="Token.Domain" class="form-control w-25" placeholder="Domain" />
+        <input type="text" asp-for="Token.Token" class="form-control w-75" placeholder="API token" />
       </div>
       <button class="btn-second" type="submit">Add</button>
     </form>
@@ -57,11 +57,11 @@
     <form asp-action="AddToken" asp-controller="Settings" asp-anti-forgery="true">
       <div class="validation" asp-validation-summary="ModelOnly"></div>
       <div class="input-group input-group-sm mt-2 mb-3">
-        <input type="hidden" asp-for="TokenToAdd.Type" value="@ServiceType.Jira" />
-        <input type="hidden" asp-for="TokenToAdd.Username" value="@User.Identity.Name" />
-        <input type="text" asp-for="TokenToAdd.Domain" class="form-control w-25" placeholder="Domain" />
-        <input type="text" asp-for="TokenToAdd.InServiceUsername" class="form-control w-25" placeholder="Username" />
-        <input type="text" asp-for="TokenToAdd.Token" class="form-control w-50" placeholder="API token" />
+        <input type="hidden" asp-for="Token.Type" value="@ServiceType.Jira" />
+        <input type="hidden" asp-for="Token.Username" value="@User.Identity.Name" />
+        <input type="text" asp-for="Token.Domain" class="form-control w-25" placeholder="Domain" />
+        <input type="text" asp-for="Token.InServiceUsername" class="form-control w-25" placeholder="Username" />
+        <input type="text" asp-for="Token.Token" class="form-control w-50" placeholder="API token" />
       </div>
       <button class="btn-second" type="submit">Add</button>
     </form>
@@ -75,30 +75,24 @@
   <h4>Token list</h4>
   @foreach (var token in Model.Tokens)
   {
-    @switch (token.Type)
-    {
-      case ServiceType.GitLab:
-        <p>
-          GitLab | @token.Domain | @token.Token
-          <a class="link" href="#">Delete</a>
-        </p>
-        break;
-      case ServiceType.GitHub:
-        <p>
-          GitHub | @token.Token
-          <a class="link" href="#">Delete</a>
-        </p>
-        break;
-      case ServiceType.Jira:
-        <p>
-          Jira | @token.Domain | @token.InServiceUsername | @token.Token
-          <a class="link" href="#">Delete</a>
-        </p>
-        break;
-    }
+    <p>
+      @switch (token.Type)
+      {
+        case ServiceType.GitLab:
+          <span>GitLab | @token.Domain | @token.Token</span>
+          break;
+        case ServiceType.GitHub:
+          <span>GitHub | @token.Token</span>
+          break;
+        case ServiceType.Jira:
+          <span>Jira | @token.Domain | @token.InServiceUsername | @token.Token</span>
+          break;
+      }
+    </p>
+    @
+    <form asp-action="DeleteToken" asp-controller="Settings">
+      <input type="hidden" asp-for="Token.Id" value="@token.Id" />
+      <button class="btn-second" type="submit">Delete</button>
+    </form>
   }
-  <p>
-    ;jgldsk jgdflkjgdflk j | jdfklgjdflkgj dflkgj lfg hfg hfg hf hfg hf gh fgh fgh fgh fghg fgh fgh fgh fgh fh fgh fgh fgh fgh j gs
-    <a class="link" href="#">Delete</a>
-  </p>
 </div>

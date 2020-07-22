@@ -9,6 +9,8 @@ using QoolloTaskViewer.ApiServices.Enums;
 using QoolloTaskViewer.Db.Repositories;
 using QoolloTaskViewer.Models;
 using QoolloTaskViewer.ViewModels;
+using System.Net.Http;
+using System.Net;
 
 namespace QoolloTaskViewer.Controllers
 {
@@ -30,14 +32,28 @@ namespace QoolloTaskViewer.Controllers
             _tokensRepository = tokensRepository;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            return View(GetTokens());
+            return View(await GetTokens());
         }
 
-        SettingsViewModel GetTokens()
+        async Task<SettingsViewModel> GetTokens()
         {
-            return new SettingsViewModel { Tokens = new List<TokenViewModel>() };
+            var user = await _usersRepository.FindUserByNameAsync(HttpContext.User.Identity.Name);
+            var tokens = await _tokensRepository.GetTokensAsync(user.Id);
+
+            var models = tokens
+                .Select(t => new TokenViewModel
+                {
+                    Id = t.Id,
+                    Token = t.Token,
+                    Domain = t.Service.Domain.Domain,
+                    InServiceUsername = t.InServiceUsername,
+                    Type = t.Service.Type,
+                })
+                .ToList();
+
+            return new SettingsViewModel { Tokens = models };
         }
 
         [HttpPost]
@@ -46,16 +62,16 @@ namespace QoolloTaskViewer.Controllers
         {
             if (ModelState.IsValid)
             {
-                switch (model.TokenToAdd.Type)
+                switch (model.Token.Type)
                 {
                     case ServiceType.GitHub:
-                        await AddGitHubToken(model.TokenToAdd);
+                        await AddGitHubToken(model.Token);
                         break;
                     case ServiceType.GitLab:
-                        await AddGitLabToken(model.TokenToAdd);
+                        await AddGitLabToken(model.Token);
                         break;
                     case ServiceType.Jira:
-                        await AddJiraToken(model.TokenToAdd);
+                        await AddJiraToken(model.Token);
                         break;
                 }
                 return RedirectToAction("Index", "Settings");
@@ -63,7 +79,7 @@ namespace QoolloTaskViewer.Controllers
             return View(model);
         }
 
-        private async Task AddGitHubToken(TokenViewModel model)
+        async Task AddGitHubToken(TokenViewModel model)
         {
             ServiceModel service = await _servicesRepository.FindServiceByDomainAsync("github.com");
             UserModel user = await _usersRepository.FindUserByNameAsync(model.Username);
@@ -77,7 +93,7 @@ namespace QoolloTaskViewer.Controllers
             await _tokensRepository.AddTokenAsync(token);
         }
 
-        private async Task AddGitLabToken(TokenViewModel model)
+        async Task AddGitLabToken(TokenViewModel model)
         {
             ServiceModel service = await _servicesRepository.FindServiceByDomainAsync(model.Domain);
 
@@ -100,7 +116,7 @@ namespace QoolloTaskViewer.Controllers
             await _tokensRepository.AddTokenAsync(token);
         }
 
-        private async Task AddJiraToken(TokenViewModel model)
+        async Task AddJiraToken(TokenViewModel model)
         {
             ServiceModel service = await _servicesRepository.FindServiceByDomainAsync(model.Domain);
 
@@ -122,6 +138,16 @@ namespace QoolloTaskViewer.Controllers
                 InServiceUsername = model.InServiceUsername,
             };
             await _tokensRepository.AddTokenAsync(token);
+        }
+
+        [HttpDelete]
+        [Route("api/token/{id}")]
+        public async Task<HttpResponseMessage> DeleteToken(string id)
+        {
+            var token = await _tokensRepository.FindTokenAsync(Guid.Parse(id));
+            await _tokensRepository.RemoveTokenAsync(token);
+
+            return new HttpResponseMessage(HttpStatusCode.OK);
         }
     }
 }

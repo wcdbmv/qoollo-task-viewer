@@ -8,6 +8,7 @@ namespace QoolloTaskViewer.ViewModels
 {
     public class TokenViewModel
     {
+        public Guid Id { get; set; }
         public string Token { get; set; }
         public string Domain { get; set; }
         public string InServiceUsername { get; set; }
