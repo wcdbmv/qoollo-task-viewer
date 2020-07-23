@@ -1,10 +1,11 @@
 ﻿:root {
-  --mineral-green: #3D5653;
-  --mineral-green-light: #425C59;
-  --mystic: #E2ECEB;
-  --tower-gray: #CEDCDA;
-  --light-gray: #C4C4C4;
+  --mineral-green: #3d5653;
+  --mineral-green-light: #425c59;
+  --mystic: #edf5f4;
+  --tower-gray: #cedcda;
   --gray: #333333;
+  --lighter-gray: #808080;
+  --light-gray: #c4c4c4;
 }
 
 html,
@@ -61,6 +62,34 @@ body {
 .token-list {
   height: 200px;
   overflow-y: auto;
+}
+
+ul {
+  margin: 0;
+  padding: 0;
+  list-style-type: none;
+}
+
+li {
+  marker: none;
+  margin: 0;
+  padding: 5px;
+}
+
+small {
+  color: var(--lighter-gray);
+}
+
+
+/* Auth */
+
+.auth {
+  width: 200px;
+  margin: auto;
+}
+
+label {
+  margin-top: 10px
 }
 
 
@@ -142,7 +171,9 @@ body {
   height: 100%;
 }
 
+
 /* Logo */
+
 .logo {
   position: absolute;
   top: 50%;
