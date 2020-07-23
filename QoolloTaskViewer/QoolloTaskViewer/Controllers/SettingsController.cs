@@ -21,7 +21,7 @@ namespace QoolloTaskViewer.Controllers
         private readonly IServicesRepository _servicesRepository;
         private readonly ITokensRepository _tokensRepository;
 
-        public SettingsController (IUsersRepository usersRepository,
+        public SettingsController(IUsersRepository usersRepository,
             IDomainsRepository domainsRepository, 
             IServicesRepository servicesRepository, 
             ITokensRepository tokensRepository)
