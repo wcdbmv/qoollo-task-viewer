@@ -20,10 +20,10 @@ namespace QoolloTaskViewer.ApiServices.Gitlab
 
         private HttpClient Client { get; set; }
 
-        public GitlabService(string token, string address)
+        public GitlabService(string token, string domain)
         {
             _token = token;
-            baseAddress = address;
+            baseAddress = $"https://{domain}/api/v4";
             CreateClient();
             AuthorizeClient();
         }

@@ -9,26 +9,8 @@
 <!-- Add token -->
 
 <div class="bg-tower-gray page-content token-add">
+
   <h4>Add token</h4>
-
-  <div class="m-0">
-    <h5 class="mt-4 mb-0">GitLab</h5>
-    <a class="link-second" target="_blank" rel="noopener noreferrer" href="https://docs.gitlab.com/ee/user/profile/personal_access_tokens.html">
-      <small>How do I create a GitLab access token?</small>
-    </a>
-    <form asp-action="AddToken" asp-controller="Settings" asp-anti-forgery="true">
-      <div class="validation" asp-validation-summary="ModelOnly"></div>
-      <div class="input-group input-group-sm mt-2 mb-3">
-        <input type="hidden" asp-for="TokenToAdd.Type" value="@ServiceType.GitHub" />
-        <input type="hidden" asp-for="TokenToAdd.UserName" value="@User.Identity.Name" />
-        <input type="text" asp-for="TokenToAdd.Domain" class="form-control w-25" placeholder="Domain" />
-        <input type="text" asp-for="TokenToAdd.Token" class="form-control w-75" placeholder="API token" />
-      </div>
-      <button class="btn-second" type="submit">Add</button>
-    </form>
-  </div>
-
-  <hr />
 
   <div class="m-0">
     <h5 class="mt-4 mb-0">GitHub</h5>
@@ -38,13 +20,31 @@
     <form asp-action="AddToken" asp-controller="Settings" asp-anti-forgery="true">
       <div class="validation" asp-validation-summary="ModelOnly"></div>
       <div class="input-group input-group-sm mt-2 mb-3">
-        <input type="hidden" asp-for="TokenToAdd.Type" value="@ServiceType.GitHub" />
-        <input type="hidden" asp-for="TokenToAdd.UserName" value="@User.Identity.Name" />
-        <input type="text" asp-for="TokenToAdd.Token" class="form-control w-75" placeholder="API token" />
+        <input type="hidden" asp-for="Token.Type" value="@ServiceType.GitHub" />
+        <input type="hidden" asp-for="Token.Username" value="@User.Identity.Name" />
+        <input type="text" asp-for="Token.Token" class="form-control w-75" placeholder="API token" />
       </div>
       <button class="btn-second" type="submit">Add</button>
     </form>
-    <button class="btn-second">Add</button>
+  </div>
+
+  <hr />
+
+  <div class="m-0">
+    <h5 class="mt-4 mb-0">GitLab</h5>
+    <a class="link-second" target="_blank" rel="noopener noreferrer" href="https://docs.gitlab.com/ee/user/profile/personal_access_tokens.html">
+      <small>How do I create a GitLab access token?</small>
+    </a>
+    <form asp-action="AddToken" asp-controller="Settings" asp-anti-forgery="true">
+      <div class="validation" asp-validation-summary="ModelOnly"></div>
+      <div class="input-group input-group-sm mt-2 mb-3">
+        <input type="hidden" asp-for="Token.Type" value="@ServiceType.GitLab" />
+        <input type="hidden" asp-for="Token.Username" value="@User.Identity.Name" />
+        <input type="text" asp-for="Token.Domain" class="form-control w-25" placeholder="Domain" />
+        <input type="text" asp-for="Token.Token" class="form-control w-75" placeholder="API token" />
+      </div>
+      <button class="btn-second" type="submit">Add</button>
+    </form>
   </div>
 
   <hr />
@@ -54,12 +54,17 @@
     <a class="link-second" target="_blank" rel="noopener noreferrer" href="https://marketplace.atlassian.com/apps/1221182/api-tokens-for-jira?hosting=server&tab=overview&utm_source=c&_ga=2.228756252.1669020999.1595418211-397360377.1594295271">
       <small>How do I create a Jira access token?</small>
     </a>
-    <div class="input-group input-group-sm mt-2 mb-3">
-      <input type="text" class="form-control w-25" placeholder="Domain" />
-      <input type="text" class="form-control w-25" placeholder="Username" />
-      <input type="text" class="form-control w-50" placeholder="API token" />
-    </div>
-    <button class="btn-second">Add</button>
+    <form asp-action="AddToken" asp-controller="Settings" asp-anti-forgery="true">
+      <div class="validation" asp-validation-summary="ModelOnly"></div>
+      <div class="input-group input-group-sm mt-2 mb-3">
+        <input type="hidden" asp-for="Token.Type" value="@ServiceType.Jira" />
+        <input type="hidden" asp-for="Token.Username" value="@User.Identity.Name" />
+        <input type="text" asp-for="Token.Domain" class="form-control w-25" placeholder="Domain" />
+        <input type="text" asp-for="Token.InServiceUsername" class="form-control w-25" placeholder="Username" />
+        <input type="text" asp-for="Token.Token" class="form-control w-50" placeholder="API token" />
+      </div>
+      <button class="btn-second" type="submit">Add</button>
+    </form>
   </div>
 
 </div>
@@ -70,30 +75,24 @@
   <h4>Token list</h4>
   @foreach (var token in Model.Tokens)
   {
-    @switch (token.Type)
-    {
-      case ServiceType.GitLab:
-        <p>
-          GitLab | @token.Domain | @token.Token
-          <a class="link" href="#">Delete</a>
-        </p>
-        break;
-      case ServiceType.GitHub:
-        <p>
-          GitHub | @token.Token
-          <a class="link" href="#">Delete</a>
-        </p>
-        break;
-      case ServiceType.Jira:
-        <p>
-          Jira | @token.Domain | @token.InServiceUsername | @token.Token
-          <a class="link" href="#">Delete</a>
-        </p>
-        break;
-    }
+    <p>
+      @switch (token.Type)
+      {
+        case ServiceType.GitLab:
+          <span>GitLab | @token.Domain | @token.Token</span>
+          break;
+        case ServiceType.GitHub:
+          <span>GitHub | @token.Token</span>
+          break;
+        case ServiceType.Jira:
+          <span>Jira | @token.Domain | @token.InServiceUsername | @token.Token</span>
+          break;
+      }
+    </p>
+    <form asp-action="DeleteToken" asp-controller="Settings" asp-anti-forgery="true">
+      <div class="validation" asp-validation-summary="ModelOnly"></div>
+      <input type="hidden" asp-for="Token.Id" value="@token.Id" />
+      <button class="btn-second" type="submit">Delete</button>
+    </form>
   }
-  <p>
-    ;jgldsk jgdflkjgdflk j | jdfklgjdflkgj dflkgj lfg hfg hfg hf hfg hf gh fgh fgh fgh fghg fgh fgh fgh fgh fh fgh fgh fgh fgh j gs
-    <a class="link" href="#">Delete</a>
-  </p>
 </div>
