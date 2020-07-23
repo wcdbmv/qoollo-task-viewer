@@ -13,10 +13,6 @@ namespace QoolloTaskViewer.Db.Configuration
         public void Configure(EntityTypeBuilder<ServiceModel> builder)
         {
             builder.HasOne(s => s.Domain).WithMany(d => d.Services).HasForeignKey(s => s.DomainId);
-
-            builder.Property(s => s.Name).IsRequired();
-            builder.Property(s => s.Name).HasMaxLength(255);
-            builder.HasAlternateKey(s => s.Name);
         }
     }
 }

@@ -11,7 +11,6 @@ namespace QoolloTaskViewer.Db
 {
     public class QoolloTaskViewerContext : IdentityDbContext<UserModel>
     {
-        public DbSet<UserModel> Users { get; set; }
         public DbSet<DomainModel> Domains { get; set; }
         public DbSet<ServiceModel> Services { get; set; }
         public DbSet<TokenModel> Tokens { get; set; }

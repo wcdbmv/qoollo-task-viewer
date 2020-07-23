@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using QoolloTaskViewer.Models;
@@ -43,14 +40,12 @@ namespace QoolloTaskViewer.Db.Repositories.Implementation
 
         public Task UpdateUserAsync(UserModel user)
         {
-            _context.Entry(user).State = EntityState.Modified;
-            return _context.SaveChangesAsync();
+            return _userManager.UpdateAsync(user);
         }
 
         public Task RemoveUserAsync(UserModel user)
         {
-            _context.Users.Remove(user);
-            return _context.SaveChangesAsync();
+            return _userManager.DeleteAsync(user);
         }
     }
 }

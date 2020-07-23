@@ -8,7 +8,6 @@ using System.Threading.Tasks;
 using QoolloTaskViewer.ApiServices.Github.Dtos;
 using QoolloTaskViewer.ApiServices.Dtos;
 using QoolloTaskViewer.ApiServices.Enums;
-using QoolloTaskViewer.Models;
 using System.IO;
 using QoolloTaskViewer.ApiServices.Github.Exceptions;
 
