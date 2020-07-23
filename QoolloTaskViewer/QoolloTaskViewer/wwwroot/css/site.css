@@ -63,6 +63,30 @@ body {
   overflow-y: auto;
 }
 
+ul {
+  margin: 0;
+  padding: 0;
+  list-style-type: none;
+}
+
+li {
+  marker: none;
+  margin: 0;
+  padding: 5px;
+}
+
+
+/* Auth */
+
+.auth {
+  width: 200px;
+  margin: auto;
+}
+
+label {
+  margin-top: 10px
+}
+
 
 /* Background */
 
@@ -142,7 +166,9 @@ body {
   height: 100%;
 }
 
+
 /* Logo */
+
 .logo {
   position: absolute;
   top: 50%;
