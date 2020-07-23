@@ -25,6 +25,8 @@ namespace QoolloTaskViewer.Controllers
         private readonly IServicesRepository _servicesRepository;
         private readonly ITokensRepository _tokensRepository;
 
+        const string gitHubDomain = "github.com";
+
         public SettingsController(IUsersRepository usersRepository,
             IDomainsRepository domainsRepository, 
             IServicesRepository servicesRepository, 
@@ -87,7 +89,6 @@ namespace QoolloTaskViewer.Controllers
         {
             if (!String.IsNullOrWhiteSpace(model.Token))
             {
-                const string gitHubDomain = "github.com";
                 ServiceModel service = await _servicesRepository.FindServiceByDomainAsync(gitHubDomain);
                 UserModel user = await _usersRepository.FindUserByNameAsync(model.Username);
 
