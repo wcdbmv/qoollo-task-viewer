@@ -13,6 +13,7 @@ using System.Net.Http;
 using System.Net;
 using Microsoft.AspNetCore.Authorization;
 using System.Text.RegularExpressions;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion.Internal;
 
 namespace QoolloTaskViewer.Controllers
 {
@@ -99,7 +100,7 @@ namespace QoolloTaskViewer.Controllers
 
         async Task AddGitLabToken(TokenViewModel model)
         {
-            model.Domain = (new Uri(model.Domain)).Host;
+            model.Domain = GetDomain(model.Domain);
             ServiceModel service = await _servicesRepository.FindServiceByDomainAsync(model.Domain);
 
             if (service == null)
@@ -123,7 +124,7 @@ namespace QoolloTaskViewer.Controllers
 
         async Task AddJiraToken(TokenViewModel model)
         {
-            model.Domain = (new Uri(model.Domain)).Host;
+            model.Domain = GetDomain(model.Domain);
             ServiceModel service = await _servicesRepository.FindServiceByDomainAsync(model.Domain);
 
             if (service == null)
@@ -144,6 +145,13 @@ namespace QoolloTaskViewer.Controllers
                 InServiceUsername = model.InServiceUsername,
             };
             await _tokensRepository.AddTokenAsync(token);
+        }
+
+        private string GetDomain(string uriString)
+        {
+            Regex regex = new Regex(@"^(?:https?://)?([^/\s]+).*", RegexOptions.Compiled | RegexOptions.Singleline);
+            var match = regex.Match(uriString);
+            return match.Groups[1].Value;
         }
 
         [HttpPost]
