@@ -12,6 +12,7 @@ using QoolloTaskViewer.ViewModels;
 using System.Net.Http;
 using System.Net;
 using Microsoft.AspNetCore.Authorization;
+using System.Text.RegularExpressions;
 
 namespace QoolloTaskViewer.Controllers
 {
@@ -85,6 +86,7 @@ namespace QoolloTaskViewer.Controllers
         {
             ServiceModel service = await _servicesRepository.FindServiceByDomainAsync("github.com");
             UserModel user = await _usersRepository.FindUserByNameAsync(model.Username);
+
             TokenModel token = new TokenModel()
             {
                 Id = new Guid(),
@@ -97,6 +99,7 @@ namespace QoolloTaskViewer.Controllers
 
         async Task AddGitLabToken(TokenViewModel model)
         {
+            model.Domain = (new Uri(model.Domain)).Host;
             ServiceModel service = await _servicesRepository.FindServiceByDomainAsync(model.Domain);
 
             if (service == null)
@@ -120,6 +123,7 @@ namespace QoolloTaskViewer.Controllers
 
         async Task AddJiraToken(TokenViewModel model)
         {
+            model.Domain = (new Uri(model.Domain)).Host;
             ServiceModel service = await _servicesRepository.FindServiceByDomainAsync(model.Domain);
 
             if (service == null)

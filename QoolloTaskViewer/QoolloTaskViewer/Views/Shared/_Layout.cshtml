@@ -25,7 +25,10 @@
         <h1>@ViewData["Title"]</h1>
       </div>
       <div class="col-3">
-        <!-- TODO: Username -->
+        @if (User.Identity.IsAuthenticated)
+        {
+          <h3>@User.Identity.Name</h3>
+        }
       </div>
     </header>
 
