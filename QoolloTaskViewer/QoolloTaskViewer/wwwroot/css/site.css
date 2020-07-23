@@ -169,7 +169,15 @@ h1 {
   color: var(--mineral-green);
   font-weight: bold;
   font-size: 36px;
-  line-height: 42px;
+  position: absolute;
+  top: 50%;
+  transform: translate(0, -50%);
+  margin-left: 10px;
+}
+
+h3 {
+  color: var(--mineral-green);
+  font-size: 20px;
   position: absolute;
   top: 50%;
   transform: translate(0, -50%);

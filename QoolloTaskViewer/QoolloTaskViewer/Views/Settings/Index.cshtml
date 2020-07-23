@@ -75,7 +75,7 @@
   <h4>Token list</h4>
   @foreach (var token in Model.Tokens)
   {
-    <p>
+    <div class="mb-2">
       @switch (token.Type)
       {
         case ServiceType.GitLab:
@@ -88,11 +88,11 @@
           <span>Jira | @token.Domain | @token.InServiceUsername | @token.Token</span>
           break;
       }
-    </p>
-    <form asp-action="DeleteToken" asp-controller="Settings" asp-anti-forgery="true">
-      <div class="validation" asp-validation-summary="ModelOnly"></div>
-      <input type="hidden" asp-for="Token.Id" value="@token.Id" />
-      <button class="btn-second" type="submit">Delete</button>
-    </form>
+      <form style="display: inline-block; margin-left: 20px;" asp-action="DeleteToken" asp-controller="Settings" asp-anti-forgery="true">
+        <div class="validation" asp-validation-summary="ModelOnly"></div>
+        <input type="hidden" asp-for="Token.Id" value="@token.Id" />
+        <button class="btn-second" type="submit">Delete</button>
+      </form>
+    </div>
   }
 </div>

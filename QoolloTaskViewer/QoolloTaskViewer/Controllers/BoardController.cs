@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using QoolloTaskViewer.ApiServices.Dtos;
 using QoolloTaskViewer.ApiServices.Enums;
@@ -11,6 +12,7 @@ using QoolloTaskViewer.ViewModels;
 
 namespace QoolloTaskViewer.Controllers
 {
+    [Authorize]
     public class BoardController : Controller
     {
         private readonly IUsersRepository _usersRepository;

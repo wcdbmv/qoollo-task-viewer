@@ -25,7 +25,10 @@
         <h1>@ViewData["Title"]</h1>
       </div>
       <div class="col-3">
-        <!-- TODO: Username -->
+        @if (User.Identity.IsAuthenticated)
+        {
+          <h3>@User.Identity.Name</h3>
+        }
       </div>
     </header>
 
@@ -34,18 +37,23 @@
       <!-- Navigation -->
 
       <nav class="nav flex-column col-3">
-        <a asp-action="index" asp-controller="Board" class="nav-link @(ViewBag.Current == "Board" ? "active" : "")">
-          <img src="~/img/icon/board_icon.svg" class="navicon" />
-          BOARD
-        </a>
-        <a asp-action="index" asp-controller="Settings" class="nav-link @(ViewBag.Current == "Settings" ? "active" : "")">
-          <img src="~/img/icon/settings_icon.svg" class="navicon" />
-          SETTINGS
-        </a>
-        <a class="nav-link" data-toggle="modal" data-target="#confirmSignOutModal" href="">
-          <img src="~/img/icon/sign_out_icon.svg" class="navicon" />
-          SIGN OUT
-        </a>
+        @if (User.Identity.IsAuthenticated)
+        {
+          <a asp-action="index" asp-controller="Board" class="nav-link
+           @(ViewBag.Current == "Board" ? "active" : "")">
+            <img src="~/img/icon/board_icon.svg" class="navicon" />
+            BOARD
+          </a>
+          <a asp-action="index" asp-controller="Settings" class="nav-link
+           @(ViewBag.Current == "Settings" ? "active" : "")">
+            <img src="~/img/icon/settings_icon.svg" class="navicon" />
+            SETTINGS
+          </a>
+          <a class="nav-link" data-toggle="modal" data-target="#confirmSignOutModal" href="">
+            <img src="~/img/icon/sign_out_icon.svg" class="navicon" />
+            SIGN OUT
+          </a>
+        }
       </nav>
 
       <!-- Content -->
@@ -69,8 +77,10 @@
           Are you sure you want to sign out?
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn-second">Yes</button>
-          <button type="button" class="btn" data-dismiss="modal">No</button>
+          <form method="post" asp-controller="Account" asp-action="Logout">
+            <button type="submit" class="btn-second">Yes</button>
+            <button type="button" class="btn" data-dismiss="modal">No</button>
+          </form>
         </div>
       </div>
     </div>
