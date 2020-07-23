@@ -85,66 +85,78 @@ namespace QoolloTaskViewer.Controllers
 
         async Task AddGitHubToken(TokenViewModel model)
         {
-            ServiceModel service = await _servicesRepository.FindServiceByDomainAsync("github.com");
-            UserModel user = await _usersRepository.FindUserByNameAsync(model.Username);
-
-            TokenModel token = new TokenModel()
+            if (!String.IsNullOrWhiteSpace(model.Token))
             {
-                Id = new Guid(),
-                Token = model.Token,
-                ServiceId = service.Id,
-                UserId = user.Id,
-            };
-            await _tokensRepository.AddTokenAsync(token);
+                ServiceModel service = await _servicesRepository.FindServiceByDomainAsync("github.com");
+                UserModel user = await _usersRepository.FindUserByNameAsync(model.Username);
+
+                TokenModel token = new TokenModel()
+                {
+                    Id = new Guid(),
+                    Token = model.Token,
+                    ServiceId = service.Id,
+                    UserId = user.Id,
+                };
+                await _tokensRepository.AddTokenAsync(token);
+            }
         }
 
         async Task AddGitLabToken(TokenViewModel model)
         {
-            model.Domain = GetDomain(model.Domain);
-            ServiceModel service = await _servicesRepository.FindServiceByDomainAsync(model.Domain);
-
-            if (service == null)
+            if (!String.IsNullOrWhiteSpace(model.Token) &&
+                !String.IsNullOrWhiteSpace(model.Domain))
             {
-                DomainModel domain = new DomainModel { Id = new Guid(), Domain = model.Domain };
-                await _domainsRepository.AddDomainAsync(domain);
-                service = new ServiceModel { Id = new Guid(), DomainId = domain.Id, Type = ServiceType.GitLab };
-                await _servicesRepository.AddServiceAsync(service);
+                model.Domain = GetDomain(model.Domain);
+                ServiceModel service = await _servicesRepository.FindServiceByDomainAsync(model.Domain);
+
+                if (service == null)
+                {
+                    DomainModel domain = new DomainModel { Id = new Guid(), Domain = model.Domain };
+                    await _domainsRepository.AddDomainAsync(domain);
+                    service = new ServiceModel { Id = new Guid(), DomainId = domain.Id, Type = ServiceType.GitLab };
+                    await _servicesRepository.AddServiceAsync(service);
+                }
+
+                UserModel user = await _usersRepository.FindUserByNameAsync(model.Username);
+                TokenModel token = new TokenModel()
+                {
+                    Id = new Guid(),
+                    Token = model.Token,
+                    ServiceId = service.Id,
+                    UserId = user.Id,
+                };
+                await _tokensRepository.AddTokenAsync(token);
             }
-
-            UserModel user = await _usersRepository.FindUserByNameAsync(model.Username);
-            TokenModel token = new TokenModel()
-            {
-                Id = new Guid(),
-                Token = model.Token,
-                ServiceId = service.Id,
-                UserId = user.Id,
-            };
-            await _tokensRepository.AddTokenAsync(token);
         }
 
         async Task AddJiraToken(TokenViewModel model)
         {
-            model.Domain = GetDomain(model.Domain);
-            ServiceModel service = await _servicesRepository.FindServiceByDomainAsync(model.Domain);
-
-            if (service == null)
+            if (!String.IsNullOrWhiteSpace(model.Token) &&
+                !String.IsNullOrWhiteSpace(model.Domain) &&
+                !String.IsNullOrWhiteSpace(model.Username))
             {
-                DomainModel domain = new DomainModel { Id = new Guid(), Domain = model.Domain };
-                await _domainsRepository.AddDomainAsync(domain);
-                service = new ServiceModel { Id = new Guid(), DomainId = domain.Id, Type = ServiceType.Jira };
-                await _servicesRepository.AddServiceAsync(service);
+                model.Domain = GetDomain(model.Domain);
+                ServiceModel service = await _servicesRepository.FindServiceByDomainAsync(model.Domain);
+
+                if (service == null)
+                {
+                    DomainModel domain = new DomainModel { Id = new Guid(), Domain = model.Domain };
+                    await _domainsRepository.AddDomainAsync(domain);
+                    service = new ServiceModel { Id = new Guid(), DomainId = domain.Id, Type = ServiceType.Jira };
+                    await _servicesRepository.AddServiceAsync(service);
+                }
+
+                UserModel user = await _usersRepository.FindUserByNameAsync(model.Username);
+                TokenModel token = new TokenModel()
+                {
+                    Id = new Guid(),
+                    Token = model.Token,
+                    ServiceId = service.Id,
+                    UserId = user.Id,
+                    InServiceUsername = model.InServiceUsername,
+                };
+                await _tokensRepository.AddTokenAsync(token);
             }
-
-            UserModel user = await _usersRepository.FindUserByNameAsync(model.Username);
-            TokenModel token = new TokenModel()
-            {
-                Id = new Guid(),
-                Token = model.Token,
-                ServiceId = service.Id,
-                UserId = user.Id,
-                InServiceUsername = model.InServiceUsername,
-            };
-            await _tokensRepository.AddTokenAsync(token);
         }
 
         private string GetDomain(string uriString)
