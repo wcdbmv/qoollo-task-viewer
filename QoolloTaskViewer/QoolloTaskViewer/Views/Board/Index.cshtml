@@ -58,22 +58,14 @@
 <!-- List of unrecognized tasks -->
 
 <div class="modal fade" id="unrecognizedModal" tabindex="-1" role="dialog" aria-labelledby="unrecognizedModalLabel" aria-hidden="true">
-  <div class="modal-dialog" role="document">
+  <div class="modal-dialog modal-sm" role="document">
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title" id="unrecognizedModalLabel">Unrecognized tasks</h5>
       </div>
       <div class="modal-body">
-        @foreach (var issue in Model.UnrecognizedIssues)
-        {
-          <div class="task unrecognized-task">
-            <p class="task-title-lim">@issue.Name</p>
-            <a target="_blank" rel="noopener noreferrer" href="@issue.Url">
-              <span class="label float-r">
-                <img src="~/img/icon/detail_icon.svg" />
-              </span>
-            </a>
-          </div>
+        @{
+          await Html.RenderPartialAsync("_Task", Model.UnrecognizedIssues);
         }
       </div>
       <div class="modal-footer">

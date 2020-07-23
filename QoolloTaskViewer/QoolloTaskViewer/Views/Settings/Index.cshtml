@@ -14,9 +14,11 @@
 
   <div class="m-0">
     <h5 class="mt-4 mb-0">GitHub</h5>
-    <a class="link-second" target="_blank" rel="noopener noreferrer" href="https://docs.github.com/en/github/authenticating-to-github/creating-a-personal-access-token">
-      <small>How do I create a GitHub access token?</small>
-    </a>
+
+    <small>
+      <a class="link-second" target="_blank" rel="noopener noreferrer" href="https://docs.github.com/en/github/authenticating-to-github/creating-a-personal-access-token">How do I create a GitHub access token?</a>
+    </small>
+
     <form asp-action="AddToken" asp-controller="Settings" asp-anti-forgery="true">
       <div class="validation" asp-validation-summary="ModelOnly"></div>
       <div class="input-group input-group-sm mt-2 mb-3">
@@ -32,9 +34,11 @@
 
   <div class="m-0">
     <h5 class="mt-4 mb-0">GitLab</h5>
-    <a class="link-second" target="_blank" rel="noopener noreferrer" href="https://docs.gitlab.com/ee/user/profile/personal_access_tokens.html">
-      <small>How do I create a GitLab access token?</small>
-    </a>
+
+    <small>
+      <a class="link-second" target="_blank" rel="noopener noreferrer" href="https://docs.gitlab.com/ee/user/profile/personal_access_tokens.html">How do I create a GitLab access token?</a>
+    </small>
+
     <form asp-action="AddToken" asp-controller="Settings" asp-anti-forgery="true">
       <div class="validation" asp-validation-summary="ModelOnly"></div>
       <div class="input-group input-group-sm mt-2 mb-3">
@@ -51,9 +55,12 @@
 
   <div class="m-0">
     <h5 class="mt-4 mb-0">Jira</h5>
-    <a class="link-second" target="_blank" rel="noopener noreferrer" href="https://marketplace.atlassian.com/apps/1221182/api-tokens-for-jira?hosting=server&tab=overview&utm_source=c&_ga=2.228756252.1669020999.1595418211-397360377.1594295271">
-      <small>How do I create a Jira access token?</small>
-    </a>
+
+    <small>
+      <a class="link-second" target="_blank" rel="noopener noreferrer" href="https://confluence.atlassian.com/cloud/api-tokens-938839638.html">How do I create a Jira access token?</a>
+      Use <a class="link-second" target="_blank" rel="noopener noreferrer" href="https://marketplace.atlassian.com/apps/1221182/api-tokens-for-jira?hosting=server&tab=overview&utm_source=c&_ga=2.228756252.1669020999.1595418211-397360377.1594295271">API Tokens for Jira</a> to manage your API tokens.
+    </small>
+
     <form asp-action="AddToken" asp-controller="Settings" asp-anti-forgery="true">
       <div class="validation" asp-validation-summary="ModelOnly"></div>
       <div class="input-group input-group-sm mt-2 mb-3">
@@ -69,10 +76,11 @@
 
 </div>
 
-<!-- Add toker -->
+<!-- Token list -->
 
 <div class="bg-tower-gray page-content token-list">
   <h4>Token list</h4>
+
   @foreach (var token in Model.Tokens)
   {
     <div class="mb-2">
@@ -88,6 +96,7 @@
           <span>Jira | @token.Domain | @token.InServiceUsername | @token.Token</span>
           break;
       }
+
       <form style="display: inline-block; margin-left: 20px;" asp-action="DeleteToken" asp-controller="Settings" asp-anti-forgery="true">
         <div class="validation" asp-validation-summary="ModelOnly"></div>
         <input type="hidden" asp-for="Token.Id" value="@token.Id" />
