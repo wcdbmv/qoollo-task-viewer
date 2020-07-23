@@ -11,9 +11,11 @@ using QoolloTaskViewer.Models;
 using QoolloTaskViewer.ViewModels;
 using System.Net.Http;
 using System.Net;
+using Microsoft.AspNetCore.Authorization;
 
 namespace QoolloTaskViewer.Controllers
 {
+    [Authorize]
     public class SettingsController : Controller
     {
         private readonly IUsersRepository _usersRepository;

@@ -49,7 +49,7 @@ namespace QoolloTaskViewer.Controllers
                     }
                     else
                     {
-                        return RedirectToAction("Index", "Home");
+                        return RedirectToAction("Index", "Board");
                     }
                 }
                 else
@@ -65,7 +65,7 @@ namespace QoolloTaskViewer.Controllers
         public async Task<IActionResult> Logout()
         {
             await _signInManager.SignOutAsync();
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("Login", "Account");
         }
 
         [HttpGet]
@@ -92,7 +92,7 @@ namespace QoolloTaskViewer.Controllers
                     if (result.Succeeded)
                     {
                         await _signInManager.SignInAsync(user, false);
-                        return RedirectToAction("Index", "Home");
+                        return RedirectToAction("Index", "Board");
                     }
                     else
                     {
