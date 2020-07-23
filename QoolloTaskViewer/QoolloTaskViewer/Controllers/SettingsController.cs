@@ -87,7 +87,8 @@ namespace QoolloTaskViewer.Controllers
         {
             if (!String.IsNullOrWhiteSpace(model.Token))
             {
-                ServiceModel service = await _servicesRepository.FindServiceByDomainAsync("github.com");
+                const string gitHubDomain = "github.com";
+                ServiceModel service = await _servicesRepository.FindServiceByDomainAsync(gitHubDomain);
                 UserModel user = await _usersRepository.FindUserByNameAsync(model.Username);
 
                 TokenModel token = new TokenModel()
