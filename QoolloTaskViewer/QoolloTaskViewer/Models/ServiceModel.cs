@@ -9,7 +9,6 @@ namespace QoolloTaskViewer.Models
     public class ServiceModel
     {
         public Guid Id { get; set; }
-        public string Name { get; set; }
         public Guid DomainId { get; set; }
         public ServiceType Type { get; set; }
 

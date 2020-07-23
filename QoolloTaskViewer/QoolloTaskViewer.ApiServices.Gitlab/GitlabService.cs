@@ -8,7 +8,6 @@ using System.Net.Http.Headers;
 using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
-using QoolloTaskViewer.Models;
 using System.IO;
 using QoolloTaskViewer.ApiServices.Gitlab.Exceptions;
 
@@ -21,10 +20,10 @@ namespace QoolloTaskViewer.ApiServices.Gitlab
 
         private HttpClient Client { get; set; }
 
-        public GitlabService(string token, string address)
+        public GitlabService(string token, string domain)
         {
             _token = token;
-            baseAddress = address;
+            baseAddress = $"https://{domain}/api/v4";
             CreateClient();
             AuthorizeClient();
         }

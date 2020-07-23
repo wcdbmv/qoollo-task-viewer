@@ -1,4 +1,5 @@
-﻿@model Issues
+﻿@using QoolloTaskViewer.ViewModels
+@model IssuesViewModel
 @{
   ViewData["Title"] = "Board";
   ViewBag.Current = "Board";
@@ -23,7 +24,7 @@
 <!-- Board -->
 
 <div class="row">
-  <div class="col-4">
+  <div class="col-4 right-delimiter">
     <div class="row">
       <h5 class="col-6">TO DO</h5>
       <h5 class="task-counter col-6">@ToDoIssuesCount</h5>
@@ -32,8 +33,8 @@
       await Html.RenderPartialAsync("_Task", Model.ToDoIssues);
     }
   </div>
-
-  <div class="col-4">
+  
+  <div class="col-4 right-delimiter">
     <div class="row">
       <h5 class="col-6">DOING</h5>
       <h5 class="task-counter col-6">@DoingIssuesCount</h5>

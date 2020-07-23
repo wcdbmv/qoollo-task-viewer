@@ -4,16 +4,16 @@ using System.Linq;
 using System.Threading.Tasks;
 using QoolloTaskViewer.ApiServices.Dtos;
 
-namespace QoolloTaskViewer.Models
+namespace QoolloTaskViewer.ViewModels
 {
-    public class Issues
+    public class IssuesViewModel
     {
         public List<IssueDto> UnrecognizedIssues { get; set; }
         public List<IssueDto> ToDoIssues { get; set; }
         public List<IssueDto> DoingIssues { get; set; }
         public List<IssueDto> ReviewIssues { get; set; }
 
-        public Issues()
+        public IssuesViewModel()
         {
             UnrecognizedIssues = new List<IssueDto> { };
             ToDoIssues = new List<IssueDto> { };

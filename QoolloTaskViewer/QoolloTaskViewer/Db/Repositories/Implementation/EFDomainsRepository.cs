@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using QoolloTaskViewer.Models;
@@ -14,9 +12,14 @@ namespace QoolloTaskViewer.Db.Repositories.Implementation
         {
         }
 
-        public Task<DomainModel> FindDomainAsync(Guid id)
+        public Task<DomainModel> FindDomainByIdAsync(Guid id)
         {
             return _context.Domains.FirstOrDefaultAsync(d => d.Id == id);
+        }
+
+        public Task<DomainModel> FindDomainByNameAsync(string domain)
+        {
+            return _context.Domains.FirstOrDefaultAsync(d => d.Domain == domain);
         }
 
         public async Task AddDomainAsync(DomainModel domain)

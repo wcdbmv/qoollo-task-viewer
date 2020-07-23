@@ -15,6 +15,7 @@ using QoolloTaskViewer.Db;
 using QoolloTaskViewer.Db.Repositories;
 using QoolloTaskViewer.Db.Repositories.Implementation;
 using QoolloTaskViewer.Models;
+using QoolloTaskViewer.ApiServices.Enums;
 
 namespace QoolloTaskViewer
 {
@@ -77,6 +78,35 @@ namespace QoolloTaskViewer
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
             });
+
+            InitializeDatabase(app).Wait();
+        }
+
+        private async Task InitializeDatabase(IApplicationBuilder app)
+        {
+            using (var serviceScope = app.ApplicationServices
+                .GetRequiredService<IServiceScopeFactory>()
+                .CreateScope())
+            {
+                var servicesRepository = serviceScope.ServiceProvider.GetService<IServicesRepository>();
+                var domainsRepository = serviceScope.ServiceProvider.GetService<IDomainsRepository>();
+
+                foreach ((string domain, ServiceType type) in new List<(string, ServiceType)>() {
+                        ( "github.com", ServiceType.GitHub ),
+                        ( "gitlab.com", ServiceType.GitLab ),
+                        ( "jira.atlassian.com", ServiceType.Jira ),
+                }) {
+                    if (await servicesRepository.FindServiceByDomainAsync(domain) == null)
+                    {
+                        await servicesRepository.AddServiceAsync(new ServiceModel
+                        {
+                            Id = new Guid(),
+                            DomainId = (await domainsRepository.FindDomainByNameAsync(domain)).Id,
+                            Type = type,
+                        });
+                    }
+                }
+            }
         }
     }
 }

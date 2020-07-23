@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using QoolloTaskViewer.Models;
 
@@ -8,7 +6,8 @@ namespace QoolloTaskViewer.Db.Repositories
 {
     public interface IDomainsRepository
     {
-        Task<DomainModel> FindDomainAsync(Guid id);
+        Task<DomainModel> FindDomainByIdAsync(Guid id);
+        Task<DomainModel> FindDomainByNameAsync(string domain);
         Task AddDomainAsync(DomainModel domain);
         Task UpdateDomainAsync(DomainModel domain);
         Task RemoveDomainAsync(DomainModel domain);

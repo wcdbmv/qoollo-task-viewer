@@ -8,7 +8,6 @@ using System.Net.Http.Headers;
 using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
-using QoolloTaskViewer.Models;
 using System.IO;
 using QoolloTaskViewer.ApiServices.Jira.Exceptions;
 
@@ -22,10 +21,10 @@ namespace QoolloTaskViewer.ApiServices.Jira
 
         private HttpClient Client { get; set; }
 
-        public JiraService(string token, string address, string username)
+        public JiraService(string token, string domain, string username)
         {
             _token = token;
-            baseAddress = address;
+            baseAddress = $"https://{domain}";
             _username = username;
             CreateClient();
             AuthorizeClient();
